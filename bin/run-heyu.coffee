@@ -11,8 +11,16 @@ clone = (obj) ->
   temp
 
 # ---- Check sanity of the environment
-test =
+test = () ->
   print 'Running tests'
+  # heyu = exec('ls')
+  # Try to write to a file
+  file = new File("myfile.txt");
+  file.open("write,create", "text")
+  file.writeln("The quick brown fox jumped over the lazy dogs")
+  file.close()
+  file.remove()
+
   print 'Tests passed'
 
 # ---- Parse the command line
@@ -21,7 +29,7 @@ parse_opts = (args) ->
     args2 =
       switch args[0]
         when '--test'
-          test
+          test()
           args[1..]
         else
           args[1..]

@@ -72,7 +72,7 @@ set the js and run the test
   Tests passed
 ```
 
-
+To use heyu-run on OpenWRT, check the scripts/remote.sh script.
 
 # LICENSE
 
