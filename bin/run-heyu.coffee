@@ -2,7 +2,32 @@
 #
 # by Pjotr Prins (c) 2013
 
-root=this
-arg=root.arguments
-if arg[0] == '--test'
+# ---- Clone objects
+clone = (obj) ->
+  return obj  if obj is null or typeof (obj) isnt "object"
+  temp = obj.constructor()
+  for key of obj
+    temp[key] = clone(obj[key])
+  temp
+
+# ---- Check sanity of the environment
+test =
   print 'Running tests'
+  print 'Tests passed'
+
+# ---- Parse the command line
+parse_opts = (args) ->
+  if args.length > 0
+    args2 =
+      switch args[0]
+        when '--test'
+          test
+          args[1..]
+        else
+          args[1..]
+    parse_opts(args2) if args2.length > 0
+
+# ---- Main program
+root=this
+args=clone(root.arguments)
+parse_opts(args)
