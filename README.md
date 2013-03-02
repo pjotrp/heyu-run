@@ -68,4 +68,8 @@ set the js and run the test
   js-1.6 bin/run-heyu.js --test
 ```
 
+# LICENSE
+
+This software is published under the liberal BSD license. See
+LICENSE.TXT. Copyright(c) 2013 Pjotr Prins
 
