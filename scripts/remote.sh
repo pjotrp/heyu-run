@@ -9,4 +9,4 @@ scp bin/run-heyu.js root@192.168.1.1:
 echo "Test remote... "
 ssh root@192.168.1.1 "js run-heyu.js --test"
 echo "Run remote... " $*
-ssh root@192.168.1.1 "js run-heyu.js $*"
+ssh root@192.168.1.1 "js run-heyu.js $* | sh"

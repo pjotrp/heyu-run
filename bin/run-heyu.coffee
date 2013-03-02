@@ -13,7 +13,6 @@ clone = (obj) ->
 # ---- Check sanity of the environment
 test = () ->
   print 'Running tests'
-  # heyu = exec('ls')
   # Try to write to a file
   file = new File("myfile.txt");
   file.open("write,create", "text")
@@ -24,18 +23,26 @@ test = () ->
   print 'Tests passed'
 
 # ---- Parse the command line
-parse_opts = (args) ->
+parse_opts = (set,args) ->
   if args.length > 0
     args2 =
       switch args[0]
         when '--test'
           test()
           args[1..]
+        when '--id'
+          set.id = args[1]
+          args[2..]
+        when '--act'
+          set.act = args[1]
+          args[2..]
         else
-          args[1..]
-    parse_opts(args2) if args2.length > 0
+          throw "Unknown argument #{args[0]}"
+    parse_opts(set,args2) if args2.length > 0
+    set
 
 # ---- Main program
-root=this
-args=clone(root.arguments)
-parse_opts(args)
+root = this
+args = clone(root.arguments)
+set = parse_opts({test: test},args)
+print "heyu",set.act,set.id

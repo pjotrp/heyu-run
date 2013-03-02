@@ -74,7 +74,20 @@ set the js and run the test
 
 To use heyu-run on OpenWRT, check the scripts/remote.sh script.
 
-# LICENSE
+## Usage
+
+run-heyu does not actually invoke heyu, but it writes a shell script
+to STDOUT, which invokes heyu. This is dictated by the fact that the
+spidermonkey edition of Javascript on OpenWRT does not allow for
+system calls. But actually, it is a good idea, the state engine should
+be independent of the switching system. So, to switch on light1 and
+update the state engine the command is
+
+```sh
+js bin/run-heyu.js --id light1 --switch on | sh
+```
+ 
+## LICENSE
 
 This software is published under the liberal BSD license. See
 LICENSE.TXT. Copyright(c) 2013 Pjotr Prins
