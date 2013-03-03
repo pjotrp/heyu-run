@@ -86,7 +86,32 @@ update the state engine the command is
 ```sh
 js bin/run-heyu.js --id light1 --switch on | sh
 ```
- 
+
+to query the current state
+
+```sh
+js bin/run-heyu.js --id light1 --state 
+on
+```
+
+to program a timer 
+
+```sh
+js bin/run-heyu.js --time 'yyyy-mm-dd hh:mm:ss' --id light1 --switch on | sh
+```
+
+run the script and execute programmed state changes
+
+```sh
+js bin/run-heyu.js --execute | sh
+```
+
+This can be run from a cron job - say every few minutes. Just make
+sure no two jobs run at the same time.
+
+Because of the state engine, the correct state will be updated even after a
+computer fails and comes back online.
+
 ## LICENSE
 
 This software is published under the liberal BSD license. See

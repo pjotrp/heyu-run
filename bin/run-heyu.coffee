@@ -33,7 +33,7 @@ parse_opts = (set,args) ->
         when '--id'
           set.id = args[1]
           args[2..]
-        when '--act'
+        when '--switch'
           set.act = args[1]
           args[2..]
         else
