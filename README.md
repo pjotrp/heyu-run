@@ -113,15 +113,18 @@ to program a timer
 js bin/run-heyu.js --time 'yyyy-mm-dd hh:mm:ss' --id light1 --switch on | sh
 ```
 
+which adds the timed command to the command queue.
+
 run the script and execute programmed state changes
 
 ```sh
-js bin/run-heyu.js --execute | sh
+js bin/run-heyu.js --exec | sh
 ```
 
+Exec mode is the only mode that can change the state machine itself.
 This can be run from a cron job - say every few minutes. We make sure
 no two jobs can write to the same file at the same time (through
-locking).
+a write lock).
 
 To switch of all known appliances, remove the queue, and reset state run
 
