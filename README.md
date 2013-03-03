@@ -1,4 +1,4 @@
-# Heyu/X10 state engine in Coffeescript
+# Heyu/X10 state machine in Coffeescript
 
 ## Introduction
 
@@ -24,6 +24,19 @@ Javascript is fast (enough) and it has a small memory foot print.  I
 am the first to say that programming Javascript is painful when coming
 from a Ruby/Python world. Fortunately, Coffeescript generates
 Javascript and takes much of that pain away.
+
+## Design
+
+The run-heyu program gets invoked by the user, and also regularly by a
+CRON job. In cron exec mode it reads the timed command queue, and
+updates the electrical appliances by writing a shell script, which in
+turn invokes heyu. The queue and state machine are maintained in JSON
+files on disk. The state machine is simple - appliances are 'on' or
+'off'. Later we may add dimming states. Appliances become known to the
+state machine when they are used the first time.
+
+Because of the state machine, the correct state will be updated even after a
+computer fails and comes back online.
 
 ## Setting up the environment
 
@@ -79,9 +92,9 @@ To use heyu-run on OpenWRT, check the scripts/remote.sh script.
 run-heyu does not actually invoke heyu, but it writes a shell script
 to STDOUT, which invokes heyu. This is dictated by the fact that the
 spidermonkey edition of Javascript on OpenWRT does not allow for
-system calls. But actually, it is a good idea, the state engine should
+system calls. But actually, it is a good idea, the state machine should
 be independent of the switching system. So, to switch on light1 and
-update the state engine the command is
+update the state machine the command is
 
 ```sh
 js bin/run-heyu.js --id light1 --switch on | sh
@@ -106,11 +119,16 @@ run the script and execute programmed state changes
 js bin/run-heyu.js --execute | sh
 ```
 
-This can be run from a cron job - say every few minutes. Just make
-sure no two jobs run at the same time.
+This can be run from a cron job - say every few minutes. We make sure
+no two jobs can write to the same file at the same time (through
+locking).
 
-Because of the state engine, the correct state will be updated even after a
-computer fails and comes back online.
+To switch of all known appliances, remove the queue, and reset state run
+
+```sh
+js bin/run-heyu.js --reset | sh
+```
+
 
 ## LICENSE
 
