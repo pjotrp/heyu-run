@@ -34,22 +34,22 @@ test = () ->
   sm = new StateMachine(states: ['OFF', 'ON'])
   print sm.availableStates()
   print sm.currentState()
-  appl = new Appl()
-  print "HERE"
+  appl = new Appl("light1")
   print appl.availableStates()
   appl.display_state()
   appl.switchOn()
   appl.display_state()
   appl.switchOff()
   appl.display_state()
-  appl2 = new Appl()
-  print "HERE"
+  appl.switchOn()
+  appl2 = new Appl("light2")
   print appl2.availableStates()
   appl2.display_state()
   appl2.switchOn()
   appl2.display_state()
   appl2.switchOff()
   appl2.display_state()
+  appl.display_state()
   print 'Tests passed'
 
 # ---- Parse the command line

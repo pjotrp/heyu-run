@@ -69,7 +69,7 @@ root.StateMachine = class StateMachine
     toStateDef.active = true
 
 root.Appl = class HeyuAppliance extends StateMachine
-  constructor: () ->
+  constructor: (name) ->
     @defineStateMachine(
       states:
         OFF:
@@ -81,10 +81,11 @@ root.Appl = class HeyuAppliance extends StateMachine
         switchOn: {from:'OFF', to:'ON'}
         switchOff: {from:'ON', to:'OFF'}
     )
+    @name = name
   heyu_exec: (args) ->
     # ...
-    print "# Appl switched state",args.from,'to',args.to
+    print "# #{@name} switched state",args.from,'to',args.to
   display_state: () ->
-    print "# Appl is",this.currentState()
+    print "# #{@name} is",this.currentState()
 
 
