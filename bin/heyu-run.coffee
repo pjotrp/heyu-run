@@ -42,6 +42,14 @@ test = () ->
   appl.display_state()
   appl.switchOff()
   appl.display_state()
+  appl2 = new Appl()
+  print "HERE"
+  print appl2.availableStates()
+  appl2.display_state()
+  appl2.switchOn()
+  appl2.display_state()
+  appl2.switchOff()
+  appl2.display_state()
   print 'Tests passed'
 
 # ---- Parse the command line
