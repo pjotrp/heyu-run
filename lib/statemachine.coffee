@@ -68,7 +68,7 @@ root.StateMachine = class StateMachine
     fromStateDef.active = false
     toStateDef.active = true
 
-root.Appl = class HeyuAppliance extends StateMachine
+root.HeyuAppliance = class HeyuAppliance extends StateMachine
   constructor: (name) ->
     @defineStateMachine(
       states:
