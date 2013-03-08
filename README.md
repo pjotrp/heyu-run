@@ -5,6 +5,10 @@ A Heyu/X10 state machine that runs on the Mozilla
 Javascript interpreter, also known as the Javascript shell. Runs on
 embedded systems that come with [heyu](http://www.heyu.org/).
 
+Note: this software is under development and does not actually work! I
+still need to make the state machine persistent and add the code for
+setting timed commands.
+
 ## Introduction
 
 The X10 protocol can control electrical appliances around the house.
@@ -137,7 +141,6 @@ To switch of all known appliances, remove the queue, and reset state run
 ```sh
 js bin/heyu-run.js --reset | sh
 ```
-
 
 ## LICENSE
 
