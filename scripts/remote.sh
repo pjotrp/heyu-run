@@ -2,11 +2,11 @@
 
 echo "Compile and test..."
 js=/opt/js-1.6.20070208/bin/js
-coffee -c bin/run-heyu.coffee 
-$js bin/run-heyu.js --test 
+coffee -c bin/heyu-run.coffee 
+$js bin/heyu-run.js --test 
 echo "Pushing script across..."
-scp bin/run-heyu.js root@192.168.1.1:
+scp bin/heyu-run.js root@192.168.1.1:
 echo "Test remote... "
-ssh root@192.168.1.1 "js run-heyu.js --test"
+ssh root@192.168.1.1 "js heyu-run.js --test"
 echo "Run remote... " $*
-ssh root@192.168.1.1 "js run-heyu.js $* | sh"
+ssh root@192.168.1.1 "js heyu-run.js $* | sh"

@@ -10,6 +10,15 @@ clone = (obj) ->
     temp[key] = clone(obj[key])
   temp
 
+# ---- Display help
+help = () ->
+  print """
+  Usage: heyu-run [args]
+
+    --test     Run tests
+  """
+  throw new Error("Done.");
+
 # ---- Check sanity of the environment
 test = () ->
   print 'Running tests'
@@ -27,6 +36,8 @@ parse_opts = (set,args) ->
   if args.length > 0
     args2 =
       switch args[0]
+        when '--help' or '-h'
+          help()
         when '--test'
           test()
           args[1..]

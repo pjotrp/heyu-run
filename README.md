@@ -27,7 +27,7 @@ Javascript and takes much of that pain away.
 
 ## Design
 
-The run-heyu program gets invoked by the user, and also regularly by a
+The heyu-run program gets invoked by the user, and also regularly by a
 CRON job. In cron exec mode it reads the timed command queue, and
 updates the electrical appliances by writing a shell script, which in
 turn invokes heyu. The queue and state machine are maintained in JSON
@@ -73,14 +73,14 @@ running a different Javascript interpreter (probably node).
 Firts compile the Coffeescript version to Javascript
 
 ```sh
-  coffee -c bin/run-heyu.coffee
+  coffee -c bin/heyu-run.coffee
 ```
 
 set the js and run the test
 
 ```sh
   alias js-1.6=/opt/js-1.6.20070208/bin/js
-  js-1.6 bin/run-heyu.js --test
+  js-1.6 bin/heyu-run.js --test
   (...)
   Tests passed
 ```
@@ -89,7 +89,7 @@ To use heyu-run on OpenWRT, check the scripts/remote.sh script.
 
 ## Usage
 
-run-heyu does not actually invoke heyu, but it writes a shell script
+heyu-run does not actually invoke heyu, but it writes a shell script
 to STDOUT, which invokes heyu. This is dictated by the fact that the
 spidermonkey edition of Javascript on OpenWRT does not allow for
 system calls. But actually, it is a good idea, the state machine should
@@ -97,20 +97,20 @@ be independent of the switching system. So, to switch on light1 and
 update the state machine the command is
 
 ```sh
-js bin/run-heyu.js --id light1 --switch on | sh
+js bin/heyu-run.js --id light1 --switch on | sh
 ```
 
 to query the current state
 
 ```sh
-js bin/run-heyu.js --id light1 --state 
+js bin/heyu-run.js --id light1 --state 
 on
 ```
 
 to program a timer 
 
 ```sh
-js bin/run-heyu.js --time 'yyyy-mm-dd hh:mm:ss' --id light1 --switch on | sh
+js bin/heyu-run.js --time 'yyyy-mm-dd hh:mm:ss' --id light1 --switch on | sh
 ```
 
 which adds the timed command to the command queue.
@@ -118,7 +118,7 @@ which adds the timed command to the command queue.
 run the script and execute programmed state changes
 
 ```sh
-js bin/run-heyu.js --exec | sh
+js bin/heyu-run.js --exec | sh
 ```
 
 Exec mode is the only mode that can change the state machine itself.
@@ -129,7 +129,7 @@ a write lock).
 To switch of all known appliances, remove the queue, and reset state run
 
 ```sh
-js bin/run-heyu.js --reset | sh
+js bin/heyu-run.js --reset | sh
 ```
 
 
