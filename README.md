@@ -1,23 +1,29 @@
 # Heyu/X10 state machine in Coffeescript
 
+A Heyu/X10 state machine that runs on the Mozilla
+[Spidermonkey](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Introduction_to_the_JavaScript_shell)
+Javascript interpreter, also known as the Javascript shell. Runs on
+embedded systems that come with [heyu](http://www.heyu.org/).
+
 ## Introduction
 
 The X10 protocol can control electrical appliances around the house.
 In our house X10 is used to (remotely) control lights, heating, a
 water bed and it reboots the ADSL router. For years the heyu tool did
-the job, loading the scheduler on a device named a CM11A. The nice
-thing about the CM11A scheduler is that it runs independently even
-when computers fail. The bad thing is that the CM11A 'programming
-language' is archaic and limited. I wanted more control and move the
-scheduler and state machine to the computer.
+the job, loading the scheduler on a device named a CM11A, the schedule
+created by a Ruby script. The nice thing about the CM11A scheduler is
+that it runs independently even when computers fail. The bad thing is
+that the CM11A 'programming language' is archaic and limited. I wanted
+more control and move the scheduler and state machine to the 'server'.
 
 Also, earlier I was running the heyu software on a laptop, which had
 to be on. Recently I moved the CM11A X10 controller to a Netgear
 WNDR3700 wifi router, which has heyu installed. I described that
-[http://thebird.nl/hardware/OpenWRT_On_Netgear_WNDR3700.html here].
-OpenWRT has a package for a [http://www.ossp.org/pkg/lib/js/
-Javascript] interpreter, which means I can run the controller in
-Javascript, and write it in Coffeescript. Nice.
+[here](http://thebird.nl/hardware/OpenWRT_On_Netgear_WNDR3700.html).
+The Linux OpenWRT distribution has a package for a
+[Javascript](http://www.ossp.org/pkg/lib/js/)
+interpreter, which is Mozilla Spidermonkey. It means I can run the controller in
+Javascript, and write the code in Coffeescript. Nice.
 
 The great thing about Javascript is that it runs almost anywhere!
 Javascript is fast (enough) and it has a small memory foot print.  I
