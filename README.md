@@ -6,7 +6,7 @@ Javascript interpreter, also known as the Javascript shell. Runs on
 embedded systems that come with [heyu](http://www.heyu.org/).
 
 Note: this software is under development and does not actually work! I
-still need to make the state machine persistent and add the code for
+still need to add the code for
 setting timed commands.
 
 ## Introduction
