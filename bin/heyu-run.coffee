@@ -29,12 +29,13 @@ read_json = (fn) ->
   buf
 
 # ---- Write JSON
-write_json = (fn,obj) ->
+write_json = (fn,objs) ->
   # Try to write to a file
   file = new File("myfile.txt")
   file.remove() if file.exists
   file.open("write,create", "text")
-  file.writeln(obj.toJSON())
+  for obj in objs do
+    file.writeln(obj.toJSON())
   file.close()
   # JSON.stringify obj
 
@@ -70,7 +71,7 @@ test = () ->
   print appl.currentState()
   assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
-  write_json("myfile.txt",appl)
+  write_json("myfile.txt",[appl,appl2])
   buf = read_json("myfile.txt")
   assert((-> buf is "test"),"read_json",buf)
   print 'Tests passed'
