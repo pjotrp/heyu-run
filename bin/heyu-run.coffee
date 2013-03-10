@@ -30,8 +30,10 @@ read_json = (fn) ->
   # state_machines
   list = []
   for obj in state_machines
-    for name,v of obj
-      appl = new HeyuAppliance(name, states: v[1])
+    for name,values of obj
+      [state,states] = values
+      appl = new HeyuAppliance(name, states: states)
+      appl.changeState('any',state)
     list.push appl
   list
 
@@ -76,7 +78,7 @@ test = () ->
   appl2.switchOff()
   appl2.display_state()
   appl.display_state()
-  print appl.currentState()
+  print '#',appl.currentState()
   assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   write_json("myfile.txt",[appl,appl2])
@@ -86,6 +88,9 @@ test = () ->
   assert((-> list[1].name is "light2"),"read_json",list[0].name)
   assert((-> list[0].currentState() is "ON"),"read_json",list[0].currentState())
   assert((-> list[1].currentState() is "OFF"),"read_json",list[0].currentState())
+  print "# persistent:"
+  list[0].display_state()
+  list[1].display_state()
   print 'Tests passed'
 
 # ---- Parse the command line
