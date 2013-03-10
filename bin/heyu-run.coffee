@@ -24,10 +24,16 @@ clone = (obj) ->
 read_json = (fn) ->
   load("myfile.txt") # Use the JS parser
   # print "JSON",json[0]["light1"]
-  for obj in json
+  for obj in state_machines
     for k,v of obj
-      print k,v
-  json
+      print '#',k,v
+  # state_machines
+  list = []
+  for obj in state_machines
+    for name,v of obj
+      appl = new HeyuAppliance(name, states: v[1])
+    list.push appl
+  list
 
 # ---- Write JSON
 write_json = (fn,objs) ->
@@ -35,7 +41,7 @@ write_json = (fn,objs) ->
   file = new File("myfile.txt")
   file.remove() if file.exists
   file.open("write,create", "text")
-  file.writeln("json = [")
+  file.writeln("state_machines = [")
   for obj in objs
     file.writeln(obj.toJSON())
   file.writeln("]")
@@ -75,7 +81,11 @@ test = () ->
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   write_json("myfile.txt",[appl,appl2])
   list = read_json("myfile.txt")
-  assert((-> list[0]["light1"][0] is "ON"),"read_json",list[0]["light1"][0])
+  assert((-> list.length==2),"read_json",list.length)
+  assert((-> list[0].name is "light1"),"read_json",list[0].name)
+  assert((-> list[1].name is "light2"),"read_json",list[0].name)
+  assert((-> list[0].currentState() is "ON"),"read_json",list[0].currentState())
+  assert((-> list[1].currentState() is "OFF"),"read_json",list[0].currentState())
   print 'Tests passed'
 
 # ---- Parse the command line
