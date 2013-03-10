@@ -4,6 +4,14 @@
 
 load('lib/statemachine.js')
 
+AssertError = (@message) ->
+
+assert = (expr, message='', got='unknown') ->
+  unless expr()
+    print 'Assertion failed',message,expr
+    print 'Got',got if got isnt 'unknown'
+    throw new AssertError(message)
+
 # ---- Clone objects
 clone = (obj) ->
   return obj  if obj is null or typeof (obj) isnt "object"
@@ -47,6 +55,9 @@ test = () ->
   appl2.switchOff()
   appl2.display_state()
   appl.display_state()
+  print appl.currentState()
+  assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
+  assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   print 'Tests passed'
 
 # ---- Parse the command line
