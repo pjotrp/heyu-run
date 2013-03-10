@@ -22,11 +22,15 @@ clone = (obj) ->
 
 # ---- Read JSON file
 read_json = (fn) ->
-  file = new File("myfile.txt")
-  file.open("read","text")
-  buf = file.readln()
-  file.close()
-  buf
+  # file = new File("myfile.txt")
+  # file.open("read","text")
+  load("myfile.txt")
+  # file.close()
+  print "JSON",json[0]["light1"]
+  for obj in json
+    for k,v of obj
+      print k,v
+  json
 
 # ---- Write JSON
 write_json = (fn,objs) ->
@@ -34,10 +38,11 @@ write_json = (fn,objs) ->
   file = new File("myfile.txt")
   file.remove() if file.exists
   file.open("write,create", "text")
-  for obj in objs do
+  file.writeln("json = [")
+  for obj in objs
     file.writeln(obj.toJSON())
+  file.writeln("]")
   file.close()
-  # JSON.stringify obj
 
 # ---- Display help
 help = () ->
@@ -72,8 +77,8 @@ test = () ->
   assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   write_json("myfile.txt",[appl,appl2])
-  buf = read_json("myfile.txt")
-  assert((-> buf is "test"),"read_json",buf)
+  list = read_json("myfile.txt")
+  assert((-> list[0]["light1"][0] is "ON"),"read_json",list[0]["light1"][0])
   print 'Tests passed'
 
 # ---- Parse the command line

@@ -68,7 +68,15 @@ root.StateMachine = class StateMachine
     fromStateDef.active = false
     toStateDef.active = true
 
-  toJSON: -> @name
+  toJSON: -> 
+    res = '{"'+@name+'":["'+@currentState()+'",'
+    res += '['
+    # for s in @availableStates()
+    #   res += '"'+s+'",'
+    res += '"OFF","ON"'
+    res += ']]},'
+    res
+
 
 root.HeyuAppliance = class HeyuAppliance extends StateMachine
   constructor: (name) ->
