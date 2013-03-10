@@ -88,9 +88,11 @@ test = () ->
   assert((-> list[1].name is "light2"),"read_json",list[0].name)
   assert((-> list[0].currentState() is "ON"),"read_json",list[0].currentState())
   assert((-> list[1].currentState() is "OFF"),"read_json",list[0].currentState())
-  print "# persistent:"
+  print "# persistent state recovered:"
   list[0].display_state()
   list[1].display_state()
+  file = new File("myfile.txt")
+  file.remove() if file.exists
   print 'Tests passed'
 
 # ---- Parse the command line

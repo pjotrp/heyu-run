@@ -68,8 +68,6 @@ root.StateMachine = class StateMachine
     fromStateDef.active = false
     toStateDef.active = true
 
-  name: -> @name
-
   # Persist SM to JSON. Writes something like
   #   {"light1":["ON",["OFF","ON"]]},
   toJSON: ->
