@@ -22,11 +22,8 @@ clone = (obj) ->
 
 # ---- Read JSON file
 read_json = (fn) ->
-  # file = new File("myfile.txt")
-  # file.open("read","text")
-  load("myfile.txt")
-  # file.close()
-  print "JSON",json[0]["light1"]
+  load("myfile.txt") # Use the JS parser
+  # print "JSON",json[0]["light1"]
   for obj in json
     for k,v of obj
       print k,v
