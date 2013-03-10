@@ -68,6 +68,8 @@ root.StateMachine = class StateMachine
     fromStateDef.active = false
     toStateDef.active = true
 
+  toJSON: -> "test"
+
 root.HeyuAppliance = class HeyuAppliance extends StateMachine
   constructor: (name) ->
     @defineStateMachine(
