@@ -71,12 +71,12 @@ root.StateMachine = class StateMachine
   # Persist SM to JSON. Writes something like
   #   {"light1":["ON",["OFF","ON"]]},
   toJSON: ->
-    res = '{"'+@name+'":["'+@currentState()+'",'
+    res = '  '+@name+': ["'+@currentState()+'",'
     res += '['
     # for s in @availableStates()
     #   res += '"'+s+'",'
     res += '"OFF","ON"'
-    res += ']]},'
+    res += ']],'
     res
 
 

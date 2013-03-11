@@ -25,19 +25,16 @@ clone = (obj) ->
 # ---- Read JSON file
 read_json = (fn) ->
   load(fn) # Use the JS parser
-  # print "JSON",json[0]["light1"]
-  for obj in state_machines
-    for k,v of obj
-      print '#',k,v
+  for k,v of state_machines
+    print '#',k,v
   # state_machines
-  list = []
-  for obj in state_machines
-    for name,values of obj
-      [state,states] = values
-      appl = new HeyuAppliance(name, states: states)
-      appl.changeState('any',state)
-    list.push appl
-  list
+  appliances = {}
+  for name,values of state_machines
+    [state,states] = values
+    appl = new HeyuAppliance(name, states: states)
+    appl.changeState('any',state)
+    appliances[name] = appl
+  appliances
 
 # ---- Write JSON
 write_json = (fn,objs) ->
@@ -45,10 +42,10 @@ write_json = (fn,objs) ->
   file = new File(fn)
   file.remove() if file.exists
   file.open("write,create", "text")
-  file.writeln("state_machines = [")
+  file.writeln("state_machines = {")
   for obj in objs
     file.writeln(obj.toJSON())
-  file.writeln("]")
+  file.writeln("}")
   file.close()
 
 # ---- Display help
@@ -92,15 +89,17 @@ test = () ->
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   print "# write persistent file"
   write_json("myfile.txt",[appl,appl2])
-  list = read_json("myfile.txt")
-  assert((-> list.length==2),"read_json",list.length)
-  assert((-> list[0].name is "light1"),"read_json",list[0].name)
-  assert((-> list[1].name is "light2"),"read_json",list[0].name)
-  assert((-> list[0].currentState() is "ON"),"read_json",list[0].currentState())
-  assert((-> list[1].currentState() is "OFF"),"read_json",list[0].currentState())
+  appls = read_json("myfile.txt")
+  keys = []
+  for own key,v of appls
+    keys.push key
+  assert((-> keys.length==2),"read_json",appls.length)
+  assert((-> appls["light1"].name is "light1"),"read_json","light1")
+  assert((-> appls["light1"].currentState() is "ON"),"read_json","ON")
+  assert((-> appls.light2.currentState() is "OFF"),"read_json","OFF")
   print "# persistent state recovered"
-  list[0].display_state()
-  list[1].display_state()
+  appls.light1.display_state()
+  appls.light2.display_state()
   print "# remove persistent file"
   file = new File("myfile.txt")
   file.remove() if file.exists
