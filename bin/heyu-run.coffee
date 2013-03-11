@@ -56,9 +56,16 @@ help = () ->
   print """
   Usage: heyu-run [args]
 
-    --test     Run tests
+    --id appl         Appliance id
+    --switch ON|OFF   Send event to appliance
+    --test            Run tests
+
+  Examples:
+
+    heyu-run --id light1 --switch on
+
   """
-  throw new Error("Done.");
+  quit(1)
 
 # ---- Check sanity of the environment
 test = () ->
@@ -98,14 +105,14 @@ test = () ->
   file = new File("myfile.txt")
   file.remove() if file.exists
   print 'Tests passed'
+  quit(0)
 
 # ---- Parse the command line
 parse_opts = (set,args) ->
   if args.length > 0
     args2 =
       switch args[0]
-        when '--help' or '-h'
-          help()
+        when '--help','-h' then help()
         when '--test'
           test()
           set.event = "on"
@@ -124,9 +131,9 @@ parse_opts = (set,args) ->
 
 # ---- Main program
 root = this
-appliances = read_json(state_db_fn)
 args = clone(root.arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
+appliances = read_json(state_db_fn)
 print "# in:",set.event,set.id
 appl = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
 appl.changeState('any',set.event)
