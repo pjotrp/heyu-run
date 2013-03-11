@@ -40,6 +40,7 @@ root.StateMachine = class StateMachine
   availableEvents: ->
     event for own event of @stateMachine.events
 
+  # Restore state without invoking events FIXME: ON/OFF only
   restoreState: (state) ->
     if state is 'ON'
       print "# Restoring #{@name} to",state
@@ -80,6 +81,7 @@ root.StateMachine = class StateMachine
 
   # Persist SM to JSON. Writes something like
   #   {"light1":["ON",["OFF","ON"]]},
+  # FIXME: ON/OFF supported only 
   toJSON: ->
     res = '  '+@name+': ["'+@currentState()+'",'
     res += '['
