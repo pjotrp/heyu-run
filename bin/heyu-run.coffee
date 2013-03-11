@@ -27,8 +27,8 @@ read_json = (fn) ->
   file = new File(fn)
   return {} if not file.exists
   load(fn) # Use the JS parser
-  for k,v of state_machines
-    print '#',k,v
+  # for k,v of state_machines
+  #   print '#',k,v
   # state_machines
   appliances = {}
   for name,values of state_machines
@@ -127,6 +127,9 @@ parse_opts = (set,args) ->
         when '--switch'
           set.event = args[1].toUpperCase()
           args[2..]
+        when '--state'
+          set.display_state = true
+          args[1..]
         else
           throw "Unknown argument #{args[0]}"
     parse_opts(set,args2) if args2.length > 0
@@ -137,7 +140,10 @@ root = this
 args = clone(root.arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
 appliances = read_json(state_db_fn)
-if set.id
+if set.id and set.display_state
+  print "# Display current state of",set.id
+  print appliances[set.id].currentState()
+if set.id and set.event
   if appliances[set.id]
     appl1 = appliances[set.id]
     print "# in:",set.event,set.id,"was",appl1.currentState()
@@ -147,9 +153,13 @@ if set.id
     appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
     appl2.changeState(appl2.currentState(),set.event)
     appliances[appl2.name] = appl2
-print "# Saving state to",state_db_fn
-list = []
-for name,appl2 of appliances
-  appl2.display_state()
-  list.push appl2
-write_json(state_db_fn,list)
+state_changed = false
+for name,appl of appliances
+  state_changed = true if appl.changed
+if state_changed
+  print "# Saving state to",state_db_fn
+  list = []
+  for name,appl2 of appliances
+    # appl2.display_state()
+    list.push appl2
+  write_json(state_db_fn,list)

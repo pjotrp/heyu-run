@@ -5,9 +5,7 @@ A Heyu/X10 state machine that runs on the Mozilla
 Javascript interpreter, also known as the Javascript shell. Runs on
 embedded systems that come with [heyu](http://www.heyu.org/).
 
-Note: this software is under development and does not actually work! I
-still need to add the code for
-setting timed commands.
+Note: I still need to add the code for setting timed commands. 
 
 ## Introduction
 
@@ -110,12 +108,22 @@ update the state machine the command is
 js bin/heyu-run.js --id light1 --switch on | sh
 ```
 
-to query the current state
+and to switch it off
+
+```sh
+js bin/heyu-run.js --id light1 --switch off | sh
+```
+
+You can see that in both cases heyu gets invoked.
+
+To query the current state
 
 ```sh
 js bin/heyu-run.js --id light1 --state 
 on
 ```
+
+==> Below this line heyu-run is not yet implemented! Coming soon <==
 
 to program a timer 
 
@@ -136,7 +144,7 @@ This can be run from a cron job - say every few minutes. We make sure
 no two jobs can write to the same file at the same time (through
 a write lock).
 
-To switch of all known appliances, remove the queue, and reset state run
+To switch off all known appliances, remove the queue, and reset state run
 
 ```sh
 js bin/heyu-run.js --reset | sh

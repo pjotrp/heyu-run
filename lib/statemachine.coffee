@@ -106,11 +106,13 @@ root.HeyuAppliance = class HeyuAppliance extends StateMachine
         switchOff: {from:'ON', to:'OFF'}
     )
     @name = name
+    @changed = false
   heyu_exec: (args) ->
     # ...
     if args.from != args.to
       print "# #{@name} switched state",args.from,'to',args.to
       print "heyu #{args.to} #{@name}"
+      @changed = true
   display_state: () ->
     print "# #{@name} is",@currentState()
 
