@@ -33,8 +33,8 @@ read_json = (fn) ->
   appliances = {}
   for name,values of state_machines
     [state,states] = values
-    appl = new HeyuAppliance(name, states: states)
-    appl.changeState('any',state)
+    appl = new HeyuAppliance(name, states: states, state: state)
+    assert((-> appl.currentState() is state),"State",state)
     appliances[name] = appl
   appliances
 
@@ -136,10 +136,15 @@ args = clone(root.arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
 appliances = read_json(state_db_fn)
 if set.id
-  print "# in:",set.event,set.id
-  appl = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
-  appl.changeState('any',set.event)
-  appliances[appl.name] = appl
+  if appliances[set.id]
+    appl1 = appliances[set.id]
+    print "# in:",set.event,set.id,"was",appl1.currentState()
+    appl1.changeState(appl1.currentState(),set.event)
+  else
+    print "# new:",set.event,set.id
+    appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
+    appl2.changeState(appl2.currentState(),set.event)
+    appliances[appl2.name] = appl2
 print "# Saving state to",state_db_fn
 list = []
 for name,appl2 of appliances

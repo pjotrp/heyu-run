@@ -96,7 +96,9 @@ root.HeyuAppliance = class HeyuAppliance extends StateMachine
     @name = name
   heyu_exec: (args) ->
     # ...
-    print "# #{@name} switched state",args.from,'to',args.to
+    if args.from != args.to
+      print "# #{@name} switched state",args.from,'to',args.to
+      print "heyu #{args.to} #{@name}"
   display_state: () ->
     print "# #{@name} is",@currentState()
 
