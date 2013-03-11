@@ -85,10 +85,10 @@ root.HeyuAppliance = class HeyuAppliance extends StateMachine
     @defineStateMachine(
       states:
         OFF:
-          onEnter: (args) -> this.heyu_exec(args)
+          onEnter: (args) -> @heyu_exec(args)
           # onExit: -> this.heyu_exec()
         ON:
-          onEnter: (args) -> this.heyu_exec(args)
+          onEnter: (args) -> @heyu_exec(args)
       events:
         switchOn: {from:'OFF', to:'ON'}
         switchOff: {from:'ON', to:'OFF'}
@@ -98,6 +98,6 @@ root.HeyuAppliance = class HeyuAppliance extends StateMachine
     # ...
     print "# #{@name} switched state",args.from,'to',args.to
   display_state: () ->
-    print "# #{@name} is",this.currentState()
+    print "# #{@name} is",@currentState()
 
 

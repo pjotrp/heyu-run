@@ -81,6 +81,7 @@ test = () ->
   print '#',appl.currentState()
   assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
+  print "# write persistent file"
   write_json("myfile.txt",[appl,appl2])
   list = read_json("myfile.txt")
   assert((-> list.length==2),"read_json",list.length)
@@ -88,9 +89,10 @@ test = () ->
   assert((-> list[1].name is "light2"),"read_json",list[0].name)
   assert((-> list[0].currentState() is "ON"),"read_json",list[0].currentState())
   assert((-> list[1].currentState() is "OFF"),"read_json",list[0].currentState())
-  print "# persistent state recovered:"
+  print "# persistent state recovered"
   list[0].display_state()
   list[1].display_state()
+  print "# remove persistent file"
   file = new File("myfile.txt")
   file.remove() if file.exists
   print 'Tests passed'
