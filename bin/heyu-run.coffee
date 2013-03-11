@@ -4,6 +4,8 @@
 
 load('lib/statemachine.js')
 
+state_db_fn = 'heyu-run.db'
+
 AssertError = (@message) ->
 
 assert = (expr, message='', got='unknown') ->
@@ -22,7 +24,7 @@ clone = (obj) ->
 
 # ---- Read JSON file
 read_json = (fn) ->
-  load("myfile.txt") # Use the JS parser
+  load(fn) # Use the JS parser
   # print "JSON",json[0]["light1"]
   for obj in state_machines
     for k,v of obj
@@ -40,7 +42,7 @@ read_json = (fn) ->
 # ---- Write JSON
 write_json = (fn,objs) ->
   # Try to write to a file
-  file = new File("myfile.txt")
+  file = new File(fn)
   file.remove() if file.exists
   file.open("write,create", "text")
   file.writeln("state_machines = [")
@@ -113,7 +115,7 @@ parse_opts = (set,args) ->
           set.id = args[1]
           args[2..]
         when '--switch'
-          set.event = args[1]
+          set.event = args[1].toUpperCase()
           args[2..]
         else
           throw "Unknown argument #{args[0]}"
@@ -122,6 +124,12 @@ parse_opts = (set,args) ->
 
 # ---- Main program
 root = this
+appliances = read_json(state_db_fn)
 args = clone(root.arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
-print "heyu",set.event,set.id
+print "# in:",set.event,set.id
+appl = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
+appl.changeState('any',set.event)
+appliances.push appl
+print "# Saving state to",state_db_fn
+write_json(state_db_fn,appliances)

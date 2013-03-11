@@ -38,7 +38,7 @@ Javascript and takes much of that pain away.
 ## Design
 
 The heyu-run program gets invoked by the user, and also regularly by a
-CRON job. In cron exec mode it reads the timed command queue, and
+CRON job. In CRON exec mode it reads the timed command queue, and
 updates the electrical appliances by writing a shell script, which in
 turn invokes heyu. The queue and state machine are maintained in JSON
 files on disk. The state machine is simple - appliances are 'on' or
