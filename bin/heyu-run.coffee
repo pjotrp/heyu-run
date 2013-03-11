@@ -33,7 +33,8 @@ read_json = (fn) ->
   appliances = {}
   for name,values of state_machines
     [state,states] = values
-    appl = new HeyuAppliance(name, states: states, state: state)
+    appl = new HeyuAppliance(name, states: states)
+    appl.restoreState(state)
     assert((-> appl.currentState() is state),"State",state)
     appliances[name] = appl
   appliances
@@ -72,12 +73,13 @@ test = () ->
   # Test state machine
   sm = new StateMachine(states: ['OFF', 'ON']) # just make sure it compiles
   appl = new HeyuAppliance("light1")
+  appl.restoreState("ON")
   print "# Available states",appl.availableStates()
   appl.display_state()
-  appl.switchOn()
-  appl.display_state()
+  assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   appl.switchOff()
   appl.display_state()
+  assert((-> appl.currentState() is "OFF"),appl.name,appl.currentState())
   appl.switchOn()
   appl2 = new HeyuAppliance("light2")
   appl2.display_state()

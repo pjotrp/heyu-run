@@ -39,6 +39,16 @@ root.StateMachine = class StateMachine
     
   availableEvents: ->
     event for own event of @stateMachine.events
+
+  restoreState: (state) ->
+    if state is 'ON'
+      print "# Restoring #{@name} to",state
+      from = 'OFF'
+      to = 'ON'
+      fromStateDef = @stateMachine.states[from]
+      toStateDef = @stateMachine.states[to]
+      fromStateDef.active = false
+      toStateDef.active = true
     
   changeState: (from, to, event=null) ->
     # If from is an array, and it contains the currentState, set from to currentState
