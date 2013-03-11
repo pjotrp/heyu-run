@@ -24,6 +24,8 @@ clone = (obj) ->
 
 # ---- Read JSON file
 read_json = (fn) ->
+  file = new File(fn)
+  return {} if not file.exists
   load(fn) # Use the JS parser
   for k,v of state_machines
     print '#',k,v
@@ -36,7 +38,7 @@ read_json = (fn) ->
     appliances[name] = appl
   appliances
 
-# ---- Write JSON
+# ---- Write JSON from list (turns Array into a Map)
 write_json = (fn,objs) ->
   # Try to write to a file
   file = new File(fn)
@@ -133,9 +135,14 @@ root = this
 args = clone(root.arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
 appliances = read_json(state_db_fn)
-print "# in:",set.event,set.id
-appl = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
-appl.changeState('any',set.event)
-appliances.push appl
+if set.id
+  print "# in:",set.event,set.id
+  appl = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
+  appl.changeState('any',set.event)
+  appliances[appl.name] = appl
 print "# Saving state to",state_db_fn
-write_json(state_db_fn,appliances)
+list = []
+for name,appl2 of appliances
+  appl2.display_state()
+  list.push appl2
+write_json(state_db_fn,list)
