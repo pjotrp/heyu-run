@@ -127,6 +127,9 @@ test = () ->
   events.add(e1)
   events.add(e2)
   events.write('test_events.txt')
+  load('test_events.txt')
+  for e3 in timed_events
+    print e3[1]
   print 'Tests passed'
   quit(0)
 

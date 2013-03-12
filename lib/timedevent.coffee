@@ -22,10 +22,10 @@ root.TimedEvents = class TimedEvents
     file = new File(fn)
     # file.remove() if file.exists
     file.open("write,create", "text")
-    file.writeln("timed_events = {")
+    file.writeln("timed_events = [")
     for rec in @list
       [date,e] = rec
       # file.writeln(date.valueOf())
-      file.writeln('["',e.time,'",',e.id,',',e.event,']')
-    file.writeln("}")
+      file.writeln('["',e.time,'","',e.id,'","',e.event,'"],')
+    file.writeln("]")
     file.close()
