@@ -3,6 +3,7 @@
 # by Pjotr Prins (c) 2013
 
 load('lib/statemachine.js')
+load('lib/timedevent.js')
 
 state_db_fn = 'heyu-run.db'
 
@@ -70,7 +71,7 @@ help = () ->
 # ---- Check sanity of the environment
 test = () ->
   print 'Running tests'
-  # Test state machine
+  print "# Test state machine"
   sm = new StateMachine(states: ['OFF', 'ON']) # just make sure it compiles
   appl = new HeyuAppliance("light1")
   appl.restoreState("ON")
@@ -107,6 +108,17 @@ test = () ->
   print "# remove persistent file"
   file = new File("myfile.txt")
   file.remove() if file.exists
+  print "# Test timer"
+  # Create an event that should have happened
+  e1 = new TimedEvent
+    time:  "2013-01-10 08:00"
+    id:    "light1"
+    event: "ON"
+  e2 = clone(e1)
+  assert(-> e1.event is "ON")
+  e2.id = 'light2'
+  assert(-> e1.id is "light1")
+  assert(-> e2.id is "light2")
   print 'Tests passed'
   quit(0)
 

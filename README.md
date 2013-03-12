@@ -128,7 +128,7 @@ on
 to program a timer 
 
 ```sh
-js bin/heyu-run.js --time 'yyyy-mm-dd hh:mm:ss' --id light1 --switch on | sh
+js bin/heyu-run.js --time 'yyyy-mm-dd hh:mm' --id light1 --switch on | sh
 ```
 
 which adds the timed command to the command queue.

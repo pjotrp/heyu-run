@@ -115,5 +115,3 @@ root.HeyuAppliance = class HeyuAppliance extends StateMachine
       @changed = true
   display_state: () ->
     print "# #{@name} is",@currentState()
-
-
