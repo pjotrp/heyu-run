@@ -6,6 +6,7 @@ load('lib/statemachine.js')
 load('lib/timedevent.js')
 
 state_db_fn = 'heyu-run.db'
+event_db_fn = 'heyu-events.db'
 
 AssertError = (@message) ->
 
@@ -93,8 +94,8 @@ test = () ->
   assert((-> appl.currentState() is "ON"),appl.name,appl.currentState())
   assert((-> appl2.currentState() is "OFF"),appl2.name,appl2.currentState())
   print "# write persistent file"
-  write_json("myfile.txt",[appl,appl2])
-  appls = read_json("myfile.txt")
+  write_json("test_db.txt",[appl,appl2])
+  appls = read_json("test_db.txt")
   keys = []
   for own key,v of appls
     keys.push key
@@ -106,19 +107,26 @@ test = () ->
   appls.light1.display_state()
   appls.light2.display_state()
   print "# remove persistent file"
-  file = new File("myfile.txt")
+  file = new File("test_db.txt")
   file.remove() if file.exists
   print "# Test timer"
   # Create an event that should have happened
+  events = new TimedEvents
   e1 = new TimedEvent
     time:  "2013-01-10 08:00"
     id:    "light1"
     event: "ON"
-  e2 = clone(e1)
+  e2 = new TimedEvent
+    time:  "2013-01-10 08:00"
+    id:    "light2"
+    event: "ON"
   assert(-> e1.event is "ON")
   e2.id = 'light2'
   assert(-> e1.id is "light1")
   assert(-> e2.id is "light2")
+  events.add(e1)
+  events.add(e2)
+  events.write('test_events.txt')
   print 'Tests passed'
   quit(0)
 
