@@ -155,8 +155,7 @@ parse_opts = (set,args) ->
     set
 
 # ---- Main program
-root = this
-args = clone(root.arguments)  # don't need to do this, just for fun
+args = clone(@arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
 appliances = read_json(state_db_fn)
 if set.id and set.display_state

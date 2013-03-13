@@ -1,6 +1,6 @@
 # Timed events
 
-@TimedEvent = class TimedEvent
+class @TimedEvent
   constructor: (args = {}) ->
     @time = args.time
     @id = args.id
