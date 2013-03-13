@@ -41,7 +41,7 @@ class @StateMachine
   # Restore state without invoking events FIXME: ON/OFF only
   restoreState: (state) ->
     if state is 'ON'
-      print "# Restoring #{@name} to",state
+      print "# State machine #{@name} is",state
       from = 'OFF'
       to = 'ON'
       fromStateDef = @stateMachine.states[from]
@@ -113,3 +113,23 @@ class @HeyuAppliance extends StateMachine
       @changed = true
   display_state: () ->
     print "# #{@name} is",@currentState()
+
+# ---- Read JSON file and return a Map of appliance state
+#      machines
+@read_json = (fn) ->
+  file = new File(fn)
+  return {} if not file.exists
+  load(fn) # Use the JS parser
+  # for k,v of state_machines
+  #   print '#',k,v
+  # state_machines
+  appliances = {}
+  for name,values of state_machines
+    [state,states] = values
+    appl = new HeyuAppliance(name, states: states)
+    appl.restoreState(state)
+    assert((-> appl.currentState() is state),"State",state)
+    appliances[name] = appl
+  appliances
+
+

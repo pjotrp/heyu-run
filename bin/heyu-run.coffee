@@ -9,25 +9,19 @@ load('lib/timedevent.js')
 state_db_fn = 'heyu-run.db'
 event_db_fn = 'heyu-events.db'
 
-# ---- Read JSON file
-read_json = (fn) ->
-  file = new File(fn)
-  return {} if not file.exists
-  load(fn) # Use the JS parser
-  # for k,v of state_machines
-  #   print '#',k,v
-  # state_machines
-  appliances = {}
-  for name,values of state_machines
-    [state,states] = values
-    appl = new HeyuAppliance(name, states: states)
-    appl.restoreState(state)
-    assert((-> appl.currentState() is state),"State",state)
-    appliances[name] = appl
-  appliances
-
 # ---- Write JSON from list (turns Array into a Map)
-write_json = (fn,objs) ->
+write_json = (fn,appliances) ->
+  # Try to write to a file
+  file = new File(fn)
+  file.remove() if file.exists
+  file.open("write,create", "text")
+  file.writeln("state_machines = {")
+  for name,appl of appliances
+    file.writeln(appl.toJSON())
+  file.writeln("}")
+  file.close()
+
+write_json1 = (fn,objs) ->
   # Try to write to a file
   file = new File(fn)
   file.remove() if file.exists
@@ -81,10 +75,11 @@ test = () ->
   print "# write persistent file"
   write_json("test_db.txt",[appl,appl2])
   appls = read_json("test_db.txt")
+  # for testing move it into an array
   keys = []
   for own key,v of appls
     keys.push key
-  assert((-> keys.length==2),"read_json",appls.length)
+  assert((-> keys.length==2),"read_json",keys.length)
   assert((-> appls["light1"].name is "light1"),"read_json","light1")
   assert((-> appls["light1"].currentState() is "ON"),"read_json","ON")
   assert((-> appls.light2.currentState() is "OFF"),"read_json","OFF")
@@ -158,19 +153,21 @@ parse_opts = (set,args) ->
 args = clone(@arguments)  # don't need to do this, just for fun
 set = parse_opts({test: test},args)
 appliances = read_json(state_db_fn)
-if set.id and set.display_state
-  print "# Display current state of",set.id
-  print appliances[set.id].currentState()
-if set.id and set.event
-  if appliances[set.id]
-    appl1 = appliances[set.id]
-    print "# in:",set.event,set.id,"was",appl1.currentState()
-    appl1.changeState(appl1.currentState(),set.event)
-  else
-    print "# new:",set.event,set.id
-    appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
-    appl2.changeState(appl2.currentState(),set.event)
-    appliances[appl2.name] = appl2
+
+if set?.id? and set.id
+  if set.display_state
+    print "# Display current state of",set.id
+    print appliances[set.id].currentState()
+  if set.event
+    if appliances[set.id]
+      appl1 = appliances[set.id]
+      print "# in:",set.event,set.id,"was",appl1.currentState()
+      appl1.changeState(appl1.currentState(),set.event)
+    else
+      print "# new:",set.event,set.id
+      appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
+      appl2.changeState(appl2.currentState(),set.event)
+      appliances[appl2.name] = appl2
 state_changed = false
 for name,appl of appliances
   state_changed = true if appl.changed
