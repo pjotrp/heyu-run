@@ -136,6 +136,7 @@ class @HeyuAppliance extends StateMachine
 # ---- Write JSON from list (turns Array into a Map)
 @write_json = (fn,appliances) ->
   # Try to write to a file
+  print "# Saving state to",fn
   file = new File(fn)
   file.remove() if file.exists
   file.open("write,create", "text")

@@ -73,10 +73,4 @@ if set?.id? and set.id
 state_changed = false
 for name,appl of appliances
   state_changed = true if appl.changed
-if state_changed
-  print "# Saving state to",state_db_fn
-  list = []
-  for name,appl2 of appliances
-    # appl2.display_state()
-    list.push appl2
-  write_json(state_db_fn,list)
+write_json(state_db_fn,appliances) if state_changed
