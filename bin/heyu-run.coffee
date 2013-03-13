@@ -113,7 +113,7 @@ test = () ->
   # Create an event that should have happened
   events = new TimedEvents
   e1 = new TimedEvent
-    time:  "2013-01-10 08:00"
+    time:  "2013-01-10 08:01"
     id:    "light1"
     event: "ON"
   e2 = new TimedEvent
@@ -133,6 +133,14 @@ test = () ->
     print l1[1]
     # parse into events
     events2.add_ary l1
+  # sort all timed events
+  appl3 = {}
+  # walk the list until time is in the future
+  sorted_events = timed_events.sort (a,b) -> if a.time > b.time return 1 else return -1
+  for e in sorted_events
+    # set the state of every device to 'latest'
+    print e
+    # update the state machine
   print 'Tests passed'
   quit(0)
 
