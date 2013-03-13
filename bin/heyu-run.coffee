@@ -21,17 +21,6 @@ write_json = (fn,appliances) ->
   file.writeln("}")
   file.close()
 
-write_json1 = (fn,objs) ->
-  # Try to write to a file
-  file = new File(fn)
-  file.remove() if file.exists
-  file.open("write,create", "text")
-  file.writeln("state_machines = {")
-  for obj in objs
-    file.writeln(obj.toJSON())
-  file.writeln("}")
-  file.close()
-
 # ---- Display help
 help = () ->
   print """
