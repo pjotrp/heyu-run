@@ -6,7 +6,7 @@
     @id = args.id
     @event = args.event
 
-@TimedEvents = class TimedEvents
+class @TimedEvents
   constructor: ->
     @list = []
   event2date: (e) ->
