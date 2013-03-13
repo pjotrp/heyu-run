@@ -128,8 +128,11 @@ test = () ->
   events.add(e2)
   events.write('test_events.txt')
   load('test_events.txt')
-  for e3 in timed_events
-    print e3[1]
+  events2 = new TimedEvents
+  for l1 in timed_events
+    print l1[1]
+    # parse into events
+    events2.add_ary l1
   print 'Tests passed'
   quit(0)
 

@@ -18,6 +18,12 @@ root.TimedEvents = class TimedEvents
   add: (e) ->
     print e.time
     @list.push [@event2date(e),e]
+  add_ary: (l) ->
+    e = new TimedEvent
+    e.time = l[0]
+    e.id = l[1]
+    e.event = l[2]
+    @add(e)
   write: (fn) ->
     file = new File(fn)
     # file.remove() if file.exists
