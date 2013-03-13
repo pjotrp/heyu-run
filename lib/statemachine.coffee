@@ -1,8 +1,6 @@
 # Simple state machine, based on coffee-machine by Stephen https://github.com/stephenb
 
-root = this
-
-root.StateMachine = class StateMachine
+@StateMachine = class StateMachine
 
   constructor: (@stateMachine = {states:{}, events:{}}) ->
     this.defineStateMachine(@stateMachine)
@@ -92,7 +90,7 @@ root.StateMachine = class StateMachine
     res
 
 
-root.HeyuAppliance = class HeyuAppliance extends StateMachine
+@HeyuAppliance = class HeyuAppliance extends StateMachine
   constructor: (name) ->
     @defineStateMachine(
       states:

@@ -2,4 +2,6 @@
 
 js=/opt/js-1.6.20070208/bin/js
 coffee -c bin/heyu-run.coffee lib/*.coffee
-$js bin/heyu-run.js --test
+if [ $? -eq 0 ]; then 
+  $js bin/heyu-run.js --test
+fi

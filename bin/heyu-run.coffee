@@ -2,27 +2,12 @@
 #
 # by Pjotr Prins (c) 2013
 
+load('lib/util.js')
 load('lib/statemachine.js')
 load('lib/timedevent.js')
 
 state_db_fn = 'heyu-run.db'
 event_db_fn = 'heyu-events.db'
-
-AssertError = (@message) ->
-
-assert = (expr, message='', got='unknown') ->
-  unless expr()
-    print 'Assertion failed',message,expr
-    print 'Got',got if got isnt 'unknown'
-    throw new AssertError(message)
-
-# ---- Clone objects
-clone = (obj) ->
-  return obj  if obj is null or typeof (obj) isnt "object"
-  temp = obj.constructor()
-  for key of obj
-    temp[key] = clone(obj[key])
-  temp
 
 # ---- Read JSON file
 read_json = (fn) ->
@@ -136,7 +121,7 @@ test = () ->
   # sort all timed events
   appl3 = {}
   # walk the list until time is in the future
-  sorted_events = timed_events.sort (a,b) -> if a.time > b.time return 1 else return -1
+  sorted_events = [] # timed_events.sort (a,b) -> if a.time > b.time return 1 else return -1
   for e in sorted_events
     # set the state of every device to 'latest'
     print e

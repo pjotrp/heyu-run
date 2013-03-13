@@ -1,14 +1,12 @@
 # Timed events
 
-root = this
-
-root.TimedEvent = class TimedEvent
+@TimedEvent = class TimedEvent
   constructor: (args = {}) ->
     @time = args.time
     @id = args.id
     @event = args.event
 
-root.TimedEvents = class TimedEvents
+@TimedEvents = class TimedEvents
   constructor: ->
     @list = []
   event2date: (e) ->
