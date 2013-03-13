@@ -9,18 +9,6 @@ load('lib/timedevent.js')
 state_db_fn = 'heyu-run.db'
 event_db_fn = 'heyu-events.db'
 
-# ---- Write JSON from list (turns Array into a Map)
-write_json = (fn,appliances) ->
-  # Try to write to a file
-  file = new File(fn)
-  file.remove() if file.exists
-  file.open("write,create", "text")
-  file.writeln("state_machines = {")
-  for name,appl of appliances
-    file.writeln(appl.toJSON())
-  file.writeln("}")
-  file.close()
-
 # ---- Display help
 help = () ->
   print """
