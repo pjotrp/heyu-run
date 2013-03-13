@@ -91,7 +91,7 @@ class @StateMachine
 
 
 class @HeyuAppliance extends StateMachine
-  constructor: (name) ->
+  constructor: (@name) ->
     @defineStateMachine(
       states:
         OFF:
@@ -103,7 +103,6 @@ class @HeyuAppliance extends StateMachine
         switchOn: {from:'OFF', to:'ON'}
         switchOff: {from:'ON', to:'OFF'}
     )
-    @name = name
     @changed = false
   heyu_exec: (args) ->
     # ...
