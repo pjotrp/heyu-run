@@ -6,6 +6,7 @@ load('lib/util.js')
 load('lib/statemachine.js')
 load('lib/timedevent.js')
 
+# File names to store state machine and events
 state_db_fn = 'heyu-run.db'
 event_db_fn = 'heyu-events.db'
 
@@ -51,11 +52,16 @@ parse_opts = (set,args) ->
     parse_opts(set,args2) if args2.length > 0
     set
 
-# ---- Main program
-args = clone(@arguments)  # don't need to do this, just for fun
-set = parse_opts({},args)
+# ---- Main program, parse command line
+set = parse_opts({},@arguments)
+
+# ---- Fetch state machine
 appliances = read_json(state_db_fn)
 
+# ---- Fetch timed events and update state
+# FIXME
+
+# ---- Update state machine from command line
 if set?.id? and set.id
   if set.display_state
     print "# Display current state of",set.id
@@ -70,6 +76,8 @@ if set?.id? and set.id
       appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
       appl2.changeState(appl2.currentState(),set.event)
       appliances[appl2.name] = appl2
+
+# ---- Write state machine to file
 state_changed = false
 for name,appl of appliances
   state_changed = true if appl.changed
