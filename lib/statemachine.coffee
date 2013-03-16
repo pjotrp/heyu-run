@@ -135,13 +135,10 @@ class @HeyuAppliance extends StateMachine
 @write_json = (fn,appliances) ->
   # Try to write to a file
   print "# Saving state to",fn
-  file = new File(fn)
-  file.remove() if file.exists
-  file.open("write,create", "text")
-  file.writeln("state_machines = {")
-  for name,appl of appliances
-    file.writeln(appl.toJSON())
-  file.writeln("}")
-  file.close()
+  write_file(fn, (f) ->
+    f.writeln("state_machines = {")
+    for name,appl of appliances
+      f.writeln(appl.toJSON())
+    f.writeln("}"))
 
 
