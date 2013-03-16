@@ -22,14 +22,20 @@ class @TimedEvents
     e.id = l[1]
     e.event = l[2]
     @add(e)
+  write_file: (fn,do_write) ->
+    f = new File(fn)
+    f.open("write,create", "text")
+    do_write(f)
+    # f.remove() if f.exists
+    f.close()
   write: (fn) ->
-    file = new File(fn)
-    # file.remove() if file.exists
-    file.open("write,create", "text")
-    file.writeln("timed_events = [")
-    for rec in @list
-      [date,e] = rec
-      # file.writeln(date.valueOf())
-      file.writeln('["',e.time,'","',e.id,'","',e.event,'"],')
-    file.writeln("]")
-    file.close()
+    list = @list
+    @write_file(fn, (f) ->
+      f.writeln("timed_events = [")
+      for rec in list
+        [date,e] = rec
+        # f.writeln(date.valueOf())
+        f.writeln('["',e.time,'","',e.id,'","',e.event,'"],')
+      f.writeln("]")
+    )
+
