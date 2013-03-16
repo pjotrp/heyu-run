@@ -2,41 +2,41 @@
 
 class @StateMachine
 
-  constructor: (@stateMachine = {states:{}, events:{}}) ->
-    this.defineStateMachine(@stateMachine)
+  constructor: (@sm = {states:{}, events:{}}) ->
+    this.create(@sm)
   
-  defineStateMachine: (@stateMachine = {states:{}, events:{}}) ->
-    if @stateMachine.states.constructor.toString().indexOf('Array') isnt -1
+  create: (@sm = {states:{}, events:{}}) ->
+    if @sm.states.constructor.toString().indexOf('Array') isnt -1
       # Array initialization
-      states = @stateMachine.states
-      @stateMachine.states = {}
+      states = @sm.states
+      @sm.states = {}
       for state in states
-        @stateMachine.states[state] = { active: (state is states[0]) }
+        @sm.states[state] = { active: (state is states[0]) }
     # Make sure an active state is properly set
-    activeStates = (state for own state, stateDef of @stateMachine.states when stateDef.active)
-    if activeStates.length is 0
+    active = (state for own state, state_def of @sm.states when state_def.active)
+    if active.length is 0
       # Set the 1st state to active
-      for own state, stateDef of @stateMachine.states
-        stateDef.active = true
+      for own state, state_def of @sm.states
+        state_def.active = true
         break
-    else if activeStates.length > 1
+    else if active.length > 1
       # Set only the 1st active state to active
-      for own state in activeStates
-        continue if state is activeStates[0]
-        stateDef.active = false
+      for own state in active
+        continue if state is active[0]
+        state_def.active = false
     # Define the event methods
-    for event, eventDef of @stateMachine.events
+    for event, eventDef of @sm.events
       do(event, eventDef) =>
         this[event] = -> this.changeState(eventDef.from, eventDef.to, event)
   
   currentState: ->
-    (state for own state, stateDef of @stateMachine.states when stateDef.active)[0]
+    (state for own state, state_def of @sm.states when state_def.active)[0]
 
   availableStates: ->
-    state for own state of @stateMachine.states
+    state for own state of @sm.states
     
   availableEvents: ->
-    event for own event of @stateMachine.events
+    event for own event of @sm.events
 
   # Restore state without invoking events FIXME: ON/OFF only
   restoreState: (state) ->
@@ -44,10 +44,10 @@ class @StateMachine
       print "# State machine #{@name} is",state
       from = 'OFF'
       to = 'ON'
-      fromStateDef = @stateMachine.states[from]
-      toStateDef = @stateMachine.states[to]
-      fromStateDef.active = false
-      toStateDef.active = true
+      states_from = @sm.states[from]
+      states_to = @sm.states[to]
+      states_from.active = false
+      states_to.active = true
     
   changeState: (from, to, event=null) ->
     # If from is an array, and it contains the currentState, set from to currentState
@@ -59,23 +59,23 @@ class @StateMachine
     # If using 'any', then set the from to whatever the current state is
     if from is 'any' then from = this.currentState()
     
-    fromStateDef = @stateMachine.states[from]
-    toStateDef = @stateMachine.states[to]
+    states_from = @sm.states[from]
+    states_to = @sm.states[to]
     
-    throw "Cannot change to state '#{to}'; it is undefined!" if toStateDef is undefined
-    throw "Cannot change from state '#{from}'; it is undefined!" if fromStateDef is undefined
-    throw "Cannot change from state '#{from}'; it is not the active state!" if fromStateDef.active isnt true
+    throw "Cannot change to state '#{to}'; it is undefined!" if states_to is undefined
+    throw "Cannot change from state '#{from}'; it is undefined!" if states_from is undefined
+    throw "Cannot change from state '#{from}'; it is not the active state!" if states_from.active isnt true
     
-    {onEnter: enterMethod, guard: guardMethod} = toStateDef
-    {onExit: exitMethod} = fromStateDef
+    {onEnter: enterMethod, guard: guardMethod} = states_to
+    {onExit: exitMethod} = states_from
     
     args = {from: from, to: to, event: event}
     return false if guardMethod isnt undefined and guardMethod.call(this, args) is false
     exitMethod.call(this, args) if exitMethod isnt undefined
     enterMethod.call(this, args) if enterMethod isnt undefined
-    @stateMachine.onStateChange.call(this, args) if @stateMachine.onStateChange isnt undefined
-    fromStateDef.active = false
-    toStateDef.active = true
+    @sm.onStateChange.call(this, args) if @sm.onStateChange isnt undefined
+    states_from.active = false
+    states_to.active = true
 
   # Persist SM to JSON. Writes something like
   #   {"light1":["ON",["OFF","ON"]]},
@@ -92,7 +92,7 @@ class @StateMachine
 
 class @HeyuAppliance extends StateMachine
   constructor: (@name) ->
-    @defineStateMachine(
+    @create(
       states:
         OFF:
           onEnter: (args) -> @heyu_exec(args)
