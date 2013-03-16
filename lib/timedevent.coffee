@@ -24,7 +24,7 @@ class @TimedEvents
     @add(e)
   write: (fn) ->
     list = @list
-    @write_file(fn, (f) ->
+    write_file(fn, (f) ->
       f.writeln("timed_events = [")
       for rec in list
         [date,e] = rec

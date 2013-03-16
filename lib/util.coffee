@@ -15,10 +15,14 @@ AssertError = (@message) ->
   temp
 
 # ---- File writer
-@write_file: (fn,do_write) ->
-  f = new File(fn)
-  f.open("write,create", "text")
-  do_write(f)
-  # f.remove() if f.exists
-  f.close()
-
+@write_file = (fn,writer) ->
+  try
+    f = new File(fn)
+    f.remove() if f.exists
+    f.open("write,create", "text")
+    writer(f)
+  catch e
+    print "File error for",fn
+    throw e
+  finally
+    f.close()
