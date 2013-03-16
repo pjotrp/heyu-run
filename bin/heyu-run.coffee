@@ -62,7 +62,7 @@ appliances = read_json(state_db_fn)
 # FIXME
 
 # ---- Update state machine from command line
-if set?.id? and set.id
+if set?.id? # and set.id
   if set.display_state
     print "# Display current state of",set.id
     print appliances[set.id].currentState()
