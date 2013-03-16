@@ -14,4 +14,11 @@ AssertError = (@message) ->
     temp[key] = clone(obj[key])
   temp
 
+# ---- File writer
+@write_file: (fn,do_write) ->
+  f = new File(fn)
+  f.open("write,create", "text")
+  do_write(f)
+  # f.remove() if f.exists
+  f.close()
 

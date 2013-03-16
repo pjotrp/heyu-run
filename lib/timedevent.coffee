@@ -22,12 +22,6 @@ class @TimedEvents
     e.id = l[1]
     e.event = l[2]
     @add(e)
-  write_file: (fn,do_write) ->
-    f = new File(fn)
-    f.open("write,create", "text")
-    do_write(f)
-    # f.remove() if f.exists
-    f.close()
   write: (fn) ->
     list = @list
     @write_file(fn, (f) ->
