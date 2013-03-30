@@ -41,6 +41,7 @@ parse_opts = (set,args) ->
         when '--time'
           set.day = args[1]
           set.time = args[2]
+          assert(-> set.time[0] != '-')
           args[3..]
         when '--id'
           set.id = args[1]
@@ -63,23 +64,26 @@ set = parse_opts({},@arguments)
 appliances = read_json(state_db_fn)
 
 # ---- Fetch timed events and update state
-# FIXME
+events = read_events(event_db_fn)
 
 # ---- Update state machine from command line
 if set?.id?
   if set.display_state
     print "# Display current state of",set.id
     print appliances[set.id].currentState()
-  if set.event
-    if appliances[set.id]
-      appl1 = appliances[set.id]
-      print "# in:",set.event,set.id,"was",appl1.currentState()
-      appl1.changeState(appl1.currentState(),set.event)
-    else
-      print "# new:",set.event,set.id
-      appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
-      appl2.changeState(appl2.currentState(),set.event)
-      appliances[appl2.name] = appl2
+  if set.time
+    events.add_ary [set.date+' '+set.time,set.id,set.event]
+  else
+    if set.event
+      if appliances[set.id]
+        appl1 = appliances[set.id]
+        print "# in:",set.event,set.id,"was",appl1.currentState()
+        appl1.changeState(appl1.currentState(),set.event)
+      else
+        print "# new:",set.event,set.id
+        appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
+        appl2.changeState(appl2.currentState(),set.event)
+        appliances[appl2.name] = appl2
 
 # ---- Write state machine to file
 state_changed = false

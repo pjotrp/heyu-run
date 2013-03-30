@@ -14,7 +14,7 @@ class @TimedEvents
     [x,y,m,d,h,m] = e.time.match(/(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d)/)
     new Date(y,m,d,h,m)
   add: (e) ->
-    print e.time
+    print "# Adding time",e.time
     @list.push [@event2date(e),e]
   add_ary: (l) ->
     e = new TimedEvent
@@ -32,4 +32,11 @@ class @TimedEvents
         f.writeln('["',e.time,'","',e.id,'","',e.event,'"],')
       f.writeln("]")
     )
+
+@read_events = (fn) ->
+  events = new TimedEvents
+  file = new File(fn)
+  return events if not file.exists
+  load(fn) # Use the JS parser
+  events
 
