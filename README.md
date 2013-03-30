@@ -128,7 +128,7 @@ on
 to program a timer 
 
 ```sh
-js bin/heyu-run.js --time 'yyyy-mm-dd hh:mm' --id light1 --switch on | sh
+js bin/heyu-run.js --time yyyy-mm-dd hh:mm --id light1 --switch on | sh
 ```
 
 which adds the timed command to the command queue.
@@ -149,6 +149,12 @@ To switch off all known appliances, remove the queue, and reset state run
 ```sh
 js bin/heyu-run.js --reset | sh
 ```
+
+==> Planned for / wished for <==
+
+* Force current state engine on device
+* Write a schedule for Heyu to upload
+* Maybe mix and match with the Heyu state engine
 
 ## LICENSE
 

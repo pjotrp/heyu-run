@@ -1,4 +1,4 @@
-# Script for HEYU runner with state machine (target spidermonkey JS)
+# Script for HEYU runner with state machine (target spidermonkey javascript interpreter)
 #
 # by Pjotr Prins (c) 2013
 
@@ -38,6 +38,10 @@ parse_opts = (set,args) ->
           set.event = "on"
           set.id  = "test"
           args[1..]
+        when '--time'
+          set.day = args[1]
+          set.time = args[2]
+          args[3..]
         when '--id'
           set.id = args[1]
           args[2..]
