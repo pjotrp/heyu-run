@@ -109,7 +109,7 @@ class @HeyuAppliance extends StateMachine
   heyu_exec: (args) ->
     if args.from != args.to
       print "# #{@name} switched state",args.from,'to',args.to
-      heyu_cli(args.to,@name)
+      @heyu_cli(@name,args.to)
       # print "heyu #{args.to} #{@name}"
       @changed = true
   display_state: () ->

@@ -106,6 +106,7 @@ if set?.id?
   else
     if set.event
       appliances_update(set.id,set.event)
+
 if set.exec? or set.replay?
   print "# Executing timed events"
   state_list = get_last_state(events)
@@ -115,8 +116,7 @@ if set.exec? or set.replay?
   if set.replay?
     print "# Replaying state machine"
     for name,appl of appliances
-      print appl.heyu_cli
-
+      appl.heyu_cli(name,appl.currentState())
 
 # ---- Write state machine to file
 state_changed = false
