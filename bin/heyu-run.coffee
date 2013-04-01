@@ -52,6 +52,9 @@ parse_opts = (set,args) ->
         when '--state'
           set.display_state = true
           args[1..]
+        when '--exec'
+          set.exec = true
+          args[1..]
         else
           throw "Unknown argument #{args[0]}"
     parse_opts(set,args2) if args2.length > 0
@@ -73,7 +76,7 @@ if set?.id?
     print appliances[set.id].currentState()
   if set.time
     events.add_ary [set.date+' '+set.time,set.id,set.event]
-    events.write(event_db_fn)
+    write_events(event_db_fn,events)
   else
     if set.event
       if appliances[set.id]
@@ -85,6 +88,11 @@ if set?.id?
         appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
         appl2.changeState(appl2.currentState(),set.event)
         appliances[appl2.name] = appl2
+if set.exec?
+  print "# Executing timed events"
+  state_list = get_last_state(events)
+  for appl,e of state_list
+    print appl,e.event,e.time
 
 # ---- Write state machine to file
 state_changed = false

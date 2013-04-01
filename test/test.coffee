@@ -55,7 +55,7 @@
   assert(-> e2.id is "light2")
   events.add(e1)
   events.add(e2)
-  events.write('test_events.txt')
+  write_events('test_events.txt',events)
   load('test_events.txt')
   events2 = new TimedEvents
   for l1 in timed_events

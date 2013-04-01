@@ -123,15 +123,13 @@ js bin/heyu-run.js --id light1 --state
 on
 ```
 
-==> Below this line heyu-run is not yet implemented! Coming soon <==
-
 to program a timer 
 
 ```sh
 js bin/heyu-run.js --time yyyy-mm-dd hh:mm --id light1 --switch on | sh
 ```
 
-which adds the timed command to the command queue.
+which adds the timed command to the event queue.
 
 run the script and execute programmed state changes
 
