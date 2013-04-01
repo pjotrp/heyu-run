@@ -32,6 +32,14 @@ am the first to say that programming Javascript is painful when coming
 from a Ruby/Python world. Fortunately, Coffeescript generates
 Javascript and takes much of that pain away.
 
+Quick examples:
+
+```sh
+  heyu-run --id light1 --switch off
+  heyu-run --time 2013-04-12 10:45 --id light1 --switch on
+  heyu-run --exec
+```
+
 ## Design
 
 The heyu-run program gets invoked by the user, and also regularly by a
@@ -99,7 +107,7 @@ To use heyu-run on OpenWRT, check the scripts/remote.sh script.
 heyu-run does not actually invoke heyu, but it writes a shell script
 to STDOUT, which invokes heyu. This is dictated by the fact that the
 spidermonkey edition of Javascript on OpenWRT does not allow for
-system calls. But actually, it is a good idea, the state machine should
+system calls. But actually this is a good idea: the state machine should
 be independent of the switching system. So, to switch on light1 and
 update the state machine the command is
 
