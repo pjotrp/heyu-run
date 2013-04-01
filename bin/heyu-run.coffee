@@ -2,6 +2,11 @@
 #
 # by Pjotr Prins (c) 2013
 
+VERSION = '0.1.0'
+
+print "# Heyu-run #{VERSION} by Pjotr Prins"
+
+
 load('lib/util.js')
 load('lib/statemachine.js')
 load('lib/timedevent.js')
@@ -17,11 +22,17 @@ help = () ->
 
     --id appl         Appliance id
     --switch ON|OFF   Send event to appliance
+    --time            Add timed event (format yyyy-mm-dd hh:mm)
+    --exec            Execute any queued timed events
+    --replay          Replay state machine and timed events
     --test            Run tests
 
   Examples:
 
     heyu-run --id light1 --switch on
+    heyu-run --time 2013-04-12 10:45 --id light1 --switch on
+    heyu-run --exec
+    heyu-run --replay
 
   """
   quit(1)
@@ -55,6 +66,9 @@ parse_opts = (set,args) ->
         when '--exec'
           set.exec = true
           args[1..]
+        when '--replay'
+          set.replay = true
+          args[1..]
         else
           throw "Unknown argument #{args[0]}"
     parse_opts(set,args2) if args2.length > 0
@@ -69,6 +83,7 @@ appliances = read_json(state_db_fn)
 # ---- Fetch timed events and update state
 events = read_events(event_db_fn)
 
+# ---- Function for updating the appliances state machine
 appliances_update = (id,event) ->
   if appliances[id]
     appl1 = appliances[id]
@@ -91,12 +106,17 @@ if set?.id?
   else
     if set.event
       appliances_update(set.id,set.event)
-if set.exec?
+if set.exec? or set.replay?
   print "# Executing timed events"
   state_list = get_last_state(events)
   for appl,e of state_list
     print "# Last event",appl,e.event,e.time
     appliances_update(e.id,e.event)
+  if set.replay?
+    print "# Replaying state machine"
+    for name,appl of appliances
+      print appl.heyu_cli
+
 
 # ---- Write state machine to file
 state_changed = false

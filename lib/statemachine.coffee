@@ -104,10 +104,13 @@ class @HeyuAppliance extends StateMachine
         switchOff: {from:'ON', to:'OFF'}
     )
     @changed = false
+  heyu_cli: (id,event) ->
+    print "heyu #{event} #{id}"
   heyu_exec: (args) ->
     if args.from != args.to
       print "# #{@name} switched state",args.from,'to',args.to
-      print "heyu #{args.to} #{@name}"
+      heyu_cli(args.to,@name)
+      # print "heyu #{args.to} #{@name}"
       @changed = true
   display_state: () ->
     print "# #{@name} is",@currentState()
@@ -129,7 +132,6 @@ class @HeyuAppliance extends StateMachine
     assert((-> appl.currentState() is state),"State",state)
     appliances[name] = appl
   appliances
-
 
 # ---- Write JSON from list (turns Array into a Map)
 @write_json = (fn,appliances) ->
