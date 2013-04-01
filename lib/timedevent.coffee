@@ -73,7 +73,7 @@ class @TimedEvents
   for event in sorted_list
     [stamp,e] = event
     if stamp.getTime() < current_time
-      print stamp,stamp.getTime(),current_time
+      # print stamp,stamp.getTime(),current_time
       last[e.id] = e
   last
 

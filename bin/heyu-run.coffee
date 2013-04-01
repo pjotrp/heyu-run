@@ -69,6 +69,17 @@ appliances = read_json(state_db_fn)
 # ---- Fetch timed events and update state
 events = read_events(event_db_fn)
 
+appliances_update = (id,event) ->
+  if appliances[id]
+    appl1 = appliances[id]
+    print "#",id,"was",appl1.currentState()
+    appl1.changeState(appl1.currentState(),event)
+  else
+    print "# new:",event,id
+    appl2 = new HeyuAppliance(id, states: ['OFF', 'ON'])
+    appl2.changeState(appl2.currentState(),event)
+    appliances[appl2.name] = appl2
+
 # ---- Update state machine from command line
 if set?.id?
   if set.display_state
@@ -79,20 +90,13 @@ if set?.id?
     write_events(event_db_fn,events)
   else
     if set.event
-      if appliances[set.id]
-        appl1 = appliances[set.id]
-        print "# in:",set.event,set.id,"was",appl1.currentState()
-        appl1.changeState(appl1.currentState(),set.event)
-      else
-        print "# new:",set.event,set.id
-        appl2 = new HeyuAppliance(set.id, states: ['OFF', 'ON'])
-        appl2.changeState(appl2.currentState(),set.event)
-        appliances[appl2.name] = appl2
+      appliances_update(set.id,set.event)
 if set.exec?
   print "# Executing timed events"
   state_list = get_last_state(events)
   for appl,e of state_list
-    print appl,e.event,e.time
+    print "# Last event",appl,e.event,e.time
+    appliances_update(e.id,e.event)
 
 # ---- Write state machine to file
 state_changed = false
