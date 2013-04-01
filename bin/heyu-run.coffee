@@ -39,7 +39,7 @@ parse_opts = (set,args) ->
           set.id  = "test"
           args[1..]
         when '--time'
-          set.day = args[1]
+          set.date = args[1]
           set.time = args[2]
           assert(-> set.time[0] != '-')
           args[3..]
@@ -73,6 +73,7 @@ if set?.id?
     print appliances[set.id].currentState()
   if set.time
     events.add_ary [set.date+' '+set.time,set.id,set.event]
+    events.write(event_db_fn)
   else
     if set.event
       if appliances[set.id]

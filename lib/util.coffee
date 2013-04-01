@@ -15,6 +15,9 @@ AssertError = (@message) ->
   temp
 
 # ---- File writer
+###
+ * {function(string, string)}
+###
 @write_file = (fn,writer) ->
   try
     f = new File(fn)
