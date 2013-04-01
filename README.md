@@ -1,11 +1,10 @@
 # Heyu/X10 state machine in Coffeescript
 
-A Heyu/X10 state machine that runs on the Mozilla
+A Heyu/X10 state machine that runs on the stand alone command line Mozilla
 [Spidermonkey](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Introduction_to_the_JavaScript_shell)
-Javascript interpreter, also known as the Javascript shell. Runs on
+Javascript interpreter, also known as the Javascript shell. This
+program runs on
 embedded systems that come with [heyu](http://www.heyu.org/).
-
-Note: I still need to add the code for setting timed commands. 
 
 ## Introduction
 
@@ -142,15 +141,18 @@ This can be run from a cron job - say every few minutes. We make sure
 no two jobs can write to the same file at the same time (through
 a write lock).
 
-To switch off all known appliances, remove the queue, and reset state run
+To set all appliances to the state in the local state machine, call
+replay
 
 ```sh
-js bin/heyu-run.js --reset | sh
+js bin/heyu-run.js --replay | sh
 ```
+
+To switch off all known appliances and remove the queue, simply remove
+the database files and run --replay
 
 ==> Planned for / wished for <==
 
-* Force current state engine on device
 * Write a schedule for Heyu to upload
 * Maybe mix and match with the Heyu state engine
 
