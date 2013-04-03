@@ -14,11 +14,23 @@ AssertError = (@message) ->
     temp[key] = clone(obj[key])
   temp
 
-# ---- File writer
+# ---- File writer 
+#
+# Writing uses a .LCK file, which gets broken after a second, or so. Just
+# to make sure no 2 processes write at exactly the same time.
 ###
  * {function(string, string)}
 ###
 @write_file = (fn,writer) ->
+  lock = new File(fn+".LCK")
+  if lock.exists
+    print "# Waiting for lock file"
+  count = 0
+  while lock.exists and count < 1000000
+    count += 1
+  lock.open("write,create", "text")
+  lock.writeln("lock")
+  lock.close()
   f = new File(fn)
   try
     f.remove() if f.exists
@@ -29,3 +41,4 @@ AssertError = (@message) ->
     throw e
   finally
     f.close()
+    lock.remove() if lock.exists
