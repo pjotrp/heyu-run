@@ -6,7 +6,7 @@ VERSION = '0.1.0'
 
 print "# Heyu-run #{VERSION} by Pjotr Prins"
 time=new Date()
-print "#",time.toLocaleString()
+print "#",time.toTimeString()
 
 load('lib/util.js')
 load('lib/statemachine.js')
