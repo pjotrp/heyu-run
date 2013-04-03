@@ -1,4 +1,4 @@
-# Heyu/X10 state machine in Coffeescript
+# Heyu/X10 state machine and controller written in Coffeescript
 
 A Heyu/X10 state machine that runs on the stand alone command line Mozilla
 [Spidermonkey](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Introduction_to_the_JavaScript_shell)
@@ -13,13 +13,14 @@ In our house X10 is used to (remotely) control lights, heating, a
 water bed and it reboots the ADSL router. For years the heyu tool did
 the job, loading the scheduler on a device named a CM11A, the schedule
 created by a Ruby script. The nice thing about the CM11A scheduler is
-that it runs independently even when computers fail. The bad thing is
-that the CM11A 'programming language' is archaic and limited. I wanted
-more control and move the scheduler and state machine to the 'server'.
+that it runs independently even when computers fail. The not so nice
+thing is that the CM11A 'programming language' is archaic and limited.
+I wanted more control and move both the scheduler and state machine to
+the 'server'.
 
-Also, earlier I was running the heyu software on a laptop, which had
-to be on. Recently I moved the CM11A X10 controller to a Netgear
-WNDR3700 wifi router, which has heyu installed. I described that
+Also, in earlier times I was running the heyu software on a laptop, which had
+to be on to program the CM11A. Recently I moved the CM11A X10 controller to a Netgear
+WNDR3700 wifi router, which also has heyu support. I described that
 [here](http://thebird.nl/hardware/OpenWRT_On_Netgear_WNDR3700.html).
 The Linux OpenWRT distribution has a package for a
 [Javascript](http://www.ossp.org/pkg/lib/js/)
@@ -191,8 +192,9 @@ A cron job could be
 * * * * * cd ~/opt/heyu-run && ./scripts/run.sh --exec | tee -a heyu.log | sh 2>> heyu.err
 ```
 
-==> Planned for / wished for <==
+## Planned for / wished for
 
+* Lock files before writing
 * Write a schedule for Heyu to upload
 * Maybe mix and match with the Heyu state engine
 
