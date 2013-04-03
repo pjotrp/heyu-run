@@ -66,32 +66,49 @@ OpenWRT just yet). On Debian
   v0.4.12
 ```
 
-This will install Coffeescript with node.js. To test code on the
-workstation you will need oosp-js there too. I had to build it from
-source so it matches the OpenWRT one (you could try the spidermonkey
-package instead)
+Note: older versions of Debian may require building node.js.
+
+This will install Coffeescript (with node.js). To test/run our code on
+the workstation you will need
+[oosp-js](http://www.ossp.org/pkg/lib/js/) there too. I had to build
+it from source so it matches the
+[OpenWRT](https://dev.openwrt.org/browser/packages/libs/ossp-js/Makefile?rev=24343) one. E.g.
 
 ```sh
   /opt/js-1.6.20070208/bin/js --version
   JavaScript-C 1.6 pre-release 1 2006-04-04 (OSSP js 1.6.20070208)
+```
+
+and test
+
+```
   ./scripts/helloworld.sh /opt/js-1.6.20070208/bin/js
   Compiling coffeescript...
   Running Mozilla javascript shell...
   hello world
 ```
 
-if you get a 'ReferenceError: print is not defined' it means you are
-running a different Javascript interpreter (probably node).
+Or install the Spidermonkey Javascript interpreter from
+[Mozilla](https://developer.mozilla.org/en/docs/SpiderMonkey). You'll
+need File writing support with
+
+```sh
+make -f Makefile.ref JS_HAS_FILE_OBJECT=1
+```
+
+If you get a 'ReferenceError: print is not defined' it means you are
+running a non-Spidermonkey Javascript interpreter (probably the one that
+comes with node.js).
 
 ## Compile and run
 
-Firts compile the Coffeescript version to Javascript
+First compile the Coffeescript version to Javascript
 
 ```sh
-  coffee -c bin/heyu-run.coffee
+  coffee -c bin/heyu-run.coffee lib/*.coffee
 ```
 
-set the js and run the test
+set the js alias and run a test
 
 ```sh
   alias js-1.6=/opt/js-1.6.20070208/bin/js
@@ -100,7 +117,7 @@ set the js and run the test
   Tests passed
 ```
 
-To use heyu-run on OpenWRT, check the scripts/remote.sh script.
+To use heyu-run on OpenWRT is similar. Check the scripts in ./script.
 
 ## Usage
 
@@ -121,9 +138,8 @@ and to switch it off
 js bin/heyu-run.js --id light1 --switch off | sh
 ```
 
-You can see that in both cases heyu gets invoked.
-
-To query the current state
+You can see that in both cases heyu gets invoked.  To query the
+current state
 
 ```sh
 js bin/heyu-run.js --id light1 --state 
@@ -138,14 +154,13 @@ js bin/heyu-run.js --time yyyy-mm-dd hh:mm --id light1 --switch on | sh
 
 which adds the timed command to the event queue.
 
-run the script and execute programmed state changes
+Run the script and execute programmed state changes
 
 ```sh
 js bin/heyu-run.js --exec | sh
 ```
 
-Exec mode is the only mode that can change the state machine itself.
-This can be run from a cron job - say every few minutes. We make sure
+Exec can be run from a cron job - say every few minutes. We make sure
 no two jobs can write to the same file at the same time (through
 a write lock).
 
@@ -159,6 +174,15 @@ js bin/heyu-run.js --replay | sh
 To switch off all known appliances and remove the queue, simply remove
 the database files and run --replay
 
+To catch heyu errors you can send the output to a file and test the
+error return code with bash. E.g.
+
+```bash
+set -e
+set -o pipefail
+js bin/heyu-run.js --id light1 --switch on | sh 2> heyu.err
+echo $?
+```
 ==> Planned for / wished for <==
 
 * Write a schedule for Heyu to upload
