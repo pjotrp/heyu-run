@@ -39,7 +39,17 @@ Quick examples:
   heyu-run --id light1 --switch off
   heyu-run --time 2013-04-12 10:45 --id light1 --switch on
   heyu-run --exec
+  heyu-run --replay
 ```
+
+## Advantages of heyu-run
+
+The state-machine and event timer is handled by the heyu-run script
+independently. heyu-run only uses the heyu software to send signals to
+the CM11A or equivalent controller. In other words, both the heyu
+software and the X10 devices are considered dumb switches.  When any
+of these gets reset, software or hardware, simply run replay mode to
+get to the current state. heyu-run works perfectly with CRON.
 
 ## Design
 
@@ -165,7 +175,7 @@ Exec can be run from a cron job - say every few minutes. We make sure
 no two jobs can write to the same file at the same time (through
 a write lock).
 
-To set all appliances to the state in the local state machine, call
+To synchronize all appliances to the state in the local state machine, call
 replay
 
 ```sh
@@ -173,7 +183,8 @@ js bin/heyu-run.js --replay | sh
 ```
 
 To switch off all known appliances and remove the queue, simply remove
-the database files and run --replay
+the database files and run --replay. It is safe to run --replay in a
+CRON job. I run --replay every few hours.
 
 To catch heyu errors you can send the STDERR output to a file and test the
 error return code with bash. We can also use 'tee' to send output to a
