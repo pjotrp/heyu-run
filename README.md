@@ -205,7 +205,9 @@ A cron job could be
 
 ## Planned for / wished for
 
+* Force manual override of state - need to track time stamp somehow
 * Lock files before writing
+* Introduce nicer JS state machine
 * Write a schedule for Heyu to upload
 * Maybe mix and match with the Heyu state engine
 
