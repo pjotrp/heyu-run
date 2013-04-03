@@ -82,14 +82,16 @@ class @TimedEvents
 event2date = (e) ->
   # unpack 2013-01-10 08:00
   try
-    [x,y,m,d,h,min] = e.time.match(/(\d\d\d\d)-([0123]?\d)-(\d{1,2}) ([012]?\d):(\d\d)/)
+    [x,y,m,d,h,min,sec] = e.time.match(/(\d\d\d\d)-([0123]?\d)-(\d{1,2}) ([012]?\d):(\d\d):?(\d\d)?/)
+    sec = 0 if not sec?
     assert(-> 2013 <= y < 2100)
     assert(-> 0 <= m <= 11)
     assert(-> 1 <= d <= 31)
     assert(-> 0 <= h <= 23)
     assert(-> 0 <= min <= 59)
+    assert(-> 0 <= sec <= 59)
   catch error
     print "Bad time description: ",e.time
     throw error
-  new Date(y,m-1,d,h,min)
+  new Date(y,m-1,d,h,min,sec)
 

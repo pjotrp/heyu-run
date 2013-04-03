@@ -109,7 +109,7 @@ if set?.id?
       # Force update of appliance now and record setting in timed events
       appliances_update(set.id,set.event)
       set.date = time.toLocaleFormat("%Y-%m-%d")
-      set.time = time.toLocaleFormat("%H:%M")
+      set.time = time.toLocaleFormat("%H:%M:%S")
       print "# updated",set.id,"at",set.time
     events.add_ary [set.date+' '+set.time,set.id,set.event]
     write_events(event_db_fn,events)
