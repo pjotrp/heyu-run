@@ -216,7 +216,8 @@ later.
 ## Planned for / wished for
 
 * Introduce nicer JS state machine
-* Write a schedule for Heyu to upload
+* Send update messages to a service such as jabber
+* Write a schedule for Heyu to upload to the CM11A
 * Maybe mix and match with the Heyu state engine
 
 ## LICENSE
