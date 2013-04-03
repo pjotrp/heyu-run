@@ -1,5 +1,6 @@
 *.js
 *.db
 *.txt
+contrib/x10*
 old/
 contrib/closure

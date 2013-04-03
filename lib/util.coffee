@@ -19,8 +19,8 @@ AssertError = (@message) ->
  * {function(string, string)}
 ###
 @write_file = (fn,writer) ->
+  f = new File(fn)
   try
-    f = new File(fn)
     f.remove() if f.exists
     f.open("write,create", "text")
     writer(f)

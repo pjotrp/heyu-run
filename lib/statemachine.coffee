@@ -105,7 +105,7 @@ class @HeyuAppliance extends StateMachine
     )
     @changed = false
   heyu_cli: (id,event) ->
-    print "heyu #{event} #{id}"
+    print "heyu #{event.toLowerCase()} #{id}"
   heyu_exec: (args) ->
     if args.from != args.to
       print "# #{@name} switched state",args.from,'to',args.to
