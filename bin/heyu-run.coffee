@@ -5,7 +5,8 @@
 VERSION = '0.1.0'
 
 print "# Heyu-run #{VERSION} by Pjotr Prins"
-
+time=new Date()
+print "#",time.toLocaleString()
 
 load('lib/util.js')
 load('lib/statemachine.js')
@@ -23,6 +24,7 @@ help = () ->
     --id appl         Appliance id
     --switch ON|OFF   Send event to appliance
     --time            Add timed event (format yyyy-mm-dd hh:mm)
+    --state           Show state of appliance
     --exec            Execute any queued timed events
     --replay          Replay state machine and timed events
     --test            Run tests
@@ -87,7 +89,7 @@ events = read_events(event_db_fn)
 appliances_update = (id,event) ->
   if appliances[id]
     appl1 = appliances[id]
-    print "#",id,"was",appl1.currentState()
+    print "#",id,"is",appl1.currentState()
     appl1.changeState(appl1.currentState(),event)
   else
     print "# new:",event,id
@@ -111,7 +113,7 @@ if set.exec? or set.replay?
   print "# Executing timed events"
   state_list = get_last_state(events)
   for appl,e of state_list
-    print "# Last event",appl,e.event,e.time
+    print "# Last event for",appl,"is",e.event,e.time
     appliances_update(e.id,e.event)
   if set.replay?
     print "# Replaying state machine"

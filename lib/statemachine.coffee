@@ -119,6 +119,7 @@ class @HeyuAppliance extends StateMachine
 #      machines
 @read_json = (fn) ->
   file = new File(fn)
+  print "#",file.path
   return {} if not file.exists
   load(fn) # Use the JS parser
   # for k,v of state_machines
