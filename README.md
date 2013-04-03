@@ -203,6 +203,16 @@ A cron job could be
 * * * * * cd ~/opt/heyu-run && ./scripts/run.sh --exec | tee -a heyu.log | sh 2>> heyu.err
 ```
 
+## Bugs / features
+
+It is possible to add multiple events when the state of an appliance
+gets changed to the timed events queue, also without using the --time
+switch. The time granularity is one minute, so it can be the user adds
+two or more conflicting events at the same time. Luck will chose which
+one is the final state(!). To be on the safe side, remove the
+ambiguous event from the database file or add a timed event one minute
+later.
+
 ## Planned for / wished for
 
 * Introduce nicer JS state machine
