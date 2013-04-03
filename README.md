@@ -175,14 +175,22 @@ To switch off all known appliances and remove the queue, simply remove
 the database files and run --replay
 
 To catch heyu errors you can send the STDERR output to a file and test the
-error return code with bash. E.g.
+error return code with bash. We can also use 'tee' to send output to a
+log file. E.g.
 
 ```bash
 set -e
 set -o pipefail
-js bin/heyu-run.js --id light1 --switch on | sh 2> heyu.err
+js bin/heyu-run.js --exec | tee -a heyu.log | sh 2>> heyu.err
 echo $?   # 0 on success, 1 on heyu error
 ```
+
+A cron job could be 
+
+```cron
+* * * * * cd ~/opt/heyu-run && ./scripts/run.sh --exec | tee -a heyu.log | sh 2>> heyu.err
+```
+
 ==> Planned for / wished for <==
 
 * Write a schedule for Heyu to upload
