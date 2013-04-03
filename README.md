@@ -174,14 +174,14 @@ js bin/heyu-run.js --replay | sh
 To switch off all known appliances and remove the queue, simply remove
 the database files and run --replay
 
-To catch heyu errors you can send the output to a file and test the
+To catch heyu errors you can send the STDERR output to a file and test the
 error return code with bash. E.g.
 
 ```bash
 set -e
 set -o pipefail
 js bin/heyu-run.js --id light1 --switch on | sh 2> heyu.err
-echo $?
+echo $?   # 0 on success, 1 on heyu error
 ```
 ==> Planned for / wished for <==
 
