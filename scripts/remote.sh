@@ -8,5 +8,6 @@ scp lib/*js root@192.168.1.1:lib
 echo "Test remote... "
 ssh root@192.168.1.1 "js heyu-run.js --test"
 echo "Run remote... " $*
-ssh root@192.168.1.1 "js heyu-run.js $*"
+ssh root@192.168.1.1 "js heyu-run.js --dry-run $*"
 ssh root@192.168.1.1 "js heyu-run.js $* | sh"
+ssh root@192.168.1.1 "js heyu-run.js --dry-run --state"

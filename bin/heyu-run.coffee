@@ -30,6 +30,7 @@ help = () ->
     --exec            Execute any queued timed events
     --replay          Replay state machine and timed events
     --test            Run tests
+    --dry-run         Do not save state
 
   Examples:
 
@@ -73,6 +74,9 @@ parse_opts = (set,args) ->
         when '--replay'
           set.replay = true
           args[1..]
+        when '--dry-run'
+          set.dry_run = true
+          args[1..]
         else
           throw "Unknown argument #{args[0]}"
     parse_opts(set,args2) if args2.length > 0
@@ -112,7 +116,7 @@ if set?.id?
       set.time = time.toLocaleFormat("%H:%M:%S")
       print "# updated",set.id,"at",set.date,set.time
     events.add_ary [set.date+' '+set.time,set.id,set.event]
-    write_events(event_db_fn,events)
+    write_events(event_db_fn,events) if not set.dry_run
 
 if set.exec? or set.replay?
   print "# Executing timed events"
@@ -129,4 +133,4 @@ if set.exec? or set.replay?
 state_changed = false
 for name,appl of appliances
   state_changed = true if appl.changed
-write_json(state_db_fn,appliances) if state_changed
+write_json(state_db_fn,appliances) if state_changed and not set.dry_run
