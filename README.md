@@ -205,10 +205,12 @@ A cron job could be to exec every minute and to replay every hour
 0 * * * * js heyu-run.js --replay |sh
 ```
 
-or more advanced
+or, perhaps, more advanced using a script and killing the relay (which
+sometimes stops communicating when the CM11A resets)
 
 ```cron
 * * * * * cd ~/opt/heyu-run && ./scripts/run.sh --exec | tee -a heyu.log | sh 2>> heyu.err
+0 * * * * killall heyu_relay ; cd ~/opt/heyu-run && ./scripts/run.sh --replay |sh
 ```
 
 on openwrt make sure to enable the cron daemon 

@@ -4,7 +4,7 @@
 #
 # by Pjotr Prins (c) 2013
 
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 
 print "# Heyu-run #{VERSION} by Pjotr Prins"
 time=new Date()
