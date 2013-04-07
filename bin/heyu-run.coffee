@@ -57,12 +57,16 @@ parse_opts = (set,args) ->
           set.id  = "test"
           args[1..]
         when '--time'
-          set.date = args[1]
-          set.time = args[2]
-          if not set.time? or set.time[0] == '-' # just time set
-            set.time = set.date
+          arg1 = args[1]
+          arg2 = args[2]
+          if not arg2? or arg2[0] == '-' # just time setting
+            set.time = arg1
             set.date = local_date
-          args[3..]
+            args[2..]
+          else
+            set.date = arg1
+            set.time = arg2
+            args[3..]
         when '--id'
           set.id = args[1]
           args[2..]
