@@ -197,11 +197,25 @@ js bin/heyu-run.js --exec | tee -a heyu.log | sh 2>> heyu.err
 echo $?   # 0 on success, 1 on heyu error
 ```
 
-A cron job could be 
+A cron job could be to exec every minute and to replay every hour
+
+```cron
+* * * * * js heyu-run.js --exec | tee -a heyu.log | sh 2>> heyu.err
+0 * * * * js heyu-run.js --replay |sh
+```
+
+or more advanced
 
 ```cron
 * * * * * cd ~/opt/heyu-run && ./scripts/run.sh --exec | tee -a heyu.log | sh 2>> heyu.err
 ```
+
+on openwrt make sure to enable the cron daemon 
+
+```sh
+/etc/init.d/cron enable
+/etc/init.d/cron start
+```sh
 
 ## Bugs / features
 
