@@ -4,7 +4,8 @@ A Heyu/X10 state machine that runs on the stand alone command line Mozilla
 [Spidermonkey](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Introduction_to_the_JavaScript_shell)
 Javascript interpreter, also known as the Javascript shell. This
 program runs on
-embedded systems that come with [heyu](http://www.heyu.org/).
+embedded systems that come with [heyu](http://www.heyu.org/) and works
+perfectly with CRON.
 
 ## Introduction
 
@@ -219,6 +220,16 @@ on openwrt make sure to enable the cron daemon
 /etc/init.d/cron enable
 /etc/init.d/cron start
 ```sh
+
+Set regular job through CRON (here I reset the ADSL modem at 3AM every
+morning)
+
+```cron
+21 3 * * * js heyu-run.js --switch off --id adsl |sh
+22 3 * * * js heyu-run.js --switch on --id adsl |sh
+```
+
+Which just touches on the power of running a heyu state machine using CRON!!
 
 ## Bugs / features
 
