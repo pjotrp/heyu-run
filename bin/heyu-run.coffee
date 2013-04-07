@@ -9,6 +9,8 @@ VERSION = '0.1.1'
 print "# Heyu-run #{VERSION} by Pjotr Prins"
 time=new Date()
 print "#",time.toTimeString()
+local_date = time.toLocaleFormat("%Y-%m-%d")
+local_time = time.toLocaleFormat("%H:%M:%S")
 
 load('lib/util.js')
 load('lib/statemachine.js')
@@ -57,7 +59,9 @@ parse_opts = (set,args) ->
         when '--time'
           set.date = args[1]
           set.time = args[2]
-          assert(-> set.time[0] != '-')
+          if not set.time? or set.time[0] == '-' # just time set
+            set.time = set.date
+            set.date = local_date
           args[3..]
         when '--id'
           set.id = args[1]
@@ -112,8 +116,8 @@ if set?.id?
     if not set.time
       # Force update of appliance now and record setting in timed events
       appliances_update(set.id,set.event)
-      set.date = time.toLocaleFormat("%Y-%m-%d")
-      set.time = time.toLocaleFormat("%H:%M:%S")
+      set.date = local_date
+      set.time = local_time
       print "# updated",set.id,"at",set.date,set.time
     events.add_ary [set.date+' '+set.time,set.id,set.event]
     write_events(event_db_fn,events) if not set.dry_run

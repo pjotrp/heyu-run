@@ -38,6 +38,7 @@ Quick examples:
 ```sh
   heyu-run --id light1 --switch off
   heyu-run --time 2013-04-12 10:45 --id light1 --switch on
+  heyu-run --time 10:46 --id light1 --switch off
   heyu-run --exec
   heyu-run --replay
 ```
