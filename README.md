@@ -130,7 +130,8 @@ set the js alias and run a test
   Tests passed
 ```
 
-To use heyu-run on OpenWRT is similar. Check the scripts in ./script.
+To use heyu-run on OpenWRT is similar. Install the 'js' package and
+check the scripts in ./script.
 
 ## Usage
 
