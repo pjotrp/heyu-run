@@ -85,7 +85,7 @@ event2date = (e) ->
     [x,y,m,d,h,min,sec] = e.time.match(/(\d\d\d\d)-([0123]?\d)-(\d{1,2}) ([012]?\d):(\d\d):?(\d\d)?/)
     sec = 0 if not sec?
     assert(-> 2013 <= y < 2100)
-    assert(-> 0 <= m <= 11)
+    assert(-> 0 <= m <= 12)
     assert(-> 1 <= d <= 31)
     assert(-> 0 <= h <= 23)
     assert(-> 0 <= min <= 59)
